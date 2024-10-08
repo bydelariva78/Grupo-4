@@ -32,6 +32,7 @@ public class Menu extends JPanel {
         Reader.leerOpciones();
         for (int i = 0; i < Constantes.NUMERO_DE_EVENTOS; i++) {
             Eventos e = new Eventos(Constantes.NOMBRES.get(i), Constantes.FECHAS.get(i), Constantes.EDADES.get(i));
+            System.out.println(Constantes.NOMBRES.get(i));
             eventos.add(e);
         }
         init(panelDeBotones);

@@ -10,6 +10,7 @@ public class Ventana extends JFrame {
 
     public Ventana()
     {
+
         init();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);

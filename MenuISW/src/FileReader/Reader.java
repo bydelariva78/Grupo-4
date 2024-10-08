@@ -15,6 +15,7 @@ public class Reader{
             while (l!=null)
             {
                 String[] s= l.split(",");
+                System.out.println(Constantes.NUMERO_DE_EVENTOS);
                 Constantes.NOMBRES.add(s[0]);
                 Constantes.FECHAS.add(Constantes.dateFormat.parse(s[1]));
                 Constantes.EDADES.add(Integer.parseInt(s[2]));
@@ -24,7 +25,9 @@ public class Reader{
         }
         catch(Exception e)
         {
-            throw new RuntimeException(e);
+            System.out.println("Se produjo una excepción: " + e.getClass().getSimpleName());
+            System.out.println("Mensaje: " + e.getMessage());
+            e.printStackTrace();
         }
 
 
