@@ -12,4 +12,4 @@ Club Zenith,2024-10-19,22
 Skyline Bar,2024-10-02,26
 Cosmic Vibes,2024-10-29,20
 Club Inferno,2024-10-09,34
-The Velvet Room,2024-09-30,23
+

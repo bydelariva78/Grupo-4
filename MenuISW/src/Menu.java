@@ -6,13 +6,14 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Menu extends JPanel {
-    ArrayList<Eventos> eventos = new ArrayList<Eventos>();
+    private ArrayList<Eventos> eventos = new ArrayList<Eventos>();
+    private JPanel panelDeBotones;
 
     public Menu() {
         this.setLayout(new BorderLayout());
 
         // Creamos un panel para los botones y lo añadimos al JScrollPane
-        JPanel panelDeBotones = new JPanel();
+        panelDeBotones = new JPanel();
         panelDeBotones.setLayout(new BoxLayout(panelDeBotones, BoxLayout.Y_AXIS));  // Apilar botones verticalmente
 
         JScrollPane scrollPane = new JScrollPane(panelDeBotones);
@@ -22,7 +23,6 @@ public class Menu extends JPanel {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         // Agregamos los eventos
         start();
-        init(panelDeBotones);
 
         // Añadimos el JScrollPane al panel principal
         this.add(scrollPane, BorderLayout.CENTER);
@@ -34,6 +34,7 @@ public class Menu extends JPanel {
             Eventos e = new Eventos(Constantes.NOMBRES.get(i), Constantes.FECHAS.get(i), Constantes.EDADES.get(i));
             eventos.add(e);
         }
+        init(panelDeBotones);
 
     }
 

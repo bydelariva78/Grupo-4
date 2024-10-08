@@ -23,9 +23,14 @@ public class Ventana extends JFrame {
 
     }
 
+    public void restart()
+    {
+        center.start();
+    }
+
     public void init()
     {
-        north=new PanelNorth();
+        north=new PanelNorth(this);
         center=new Menu();
 
     }
