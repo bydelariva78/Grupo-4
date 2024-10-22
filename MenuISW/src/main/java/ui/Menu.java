@@ -1,5 +1,8 @@
+package ui;
+
 import FileReader.Constantes;
 import FileReader.Reader;
+import modelo.Eventos;
 
 import javax.swing.*;
 import java.awt.*;

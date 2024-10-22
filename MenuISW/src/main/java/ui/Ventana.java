@@ -1,12 +1,13 @@
+package ui;
+
 import FileReader.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.StandardSocketOptions;
 
 public class Ventana extends JFrame {
     private PanelNorth north;
-    private Menu center;
+    private ui.Menu center;
 
     public Ventana()
     {

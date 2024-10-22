@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 
 public class Reader{
-    private static final String file = "src/FileReader/discotecas_actuales.txt";
+    private static final String file = "src/main/java/FileReader/discotecas_actuales.txt";
 
     public static void leerOpciones(){
         try {
