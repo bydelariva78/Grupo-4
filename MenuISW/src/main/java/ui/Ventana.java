@@ -20,7 +20,6 @@ public class Ventana extends JFrame {
         setLayout(new BorderLayout());
         this.add(north, BorderLayout.NORTH);
         this.add(center, BorderLayout.CENTER);
-        System.out.println(Constantes.NOMBRES.get(1));
 
 
     }
