@@ -152,7 +152,7 @@ public class JRegistro extends JFrame implements ActionListener{
             comprobarContrasenya.setText("Usuario registrado con ÉXITO");
             Usuario user = new Usuario(nom, con);
             DatabaseOperations.insertUser(user);
-            Thread.sleep(3000);
+            Thread.sleep(3000); //Esto lo he puesto porque quiero que se congele un segundo con lo de usuario registrado y luego pase al menu
         } else {
             comprobarContrasenya.setText("Las contraseñas no coinciden");
         }
