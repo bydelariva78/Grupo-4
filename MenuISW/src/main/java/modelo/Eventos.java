@@ -1,5 +1,8 @@
+package modelo;
+
+import ui.BotonEvento;
+
 import javax.swing.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Eventos extends JPanel{
@@ -59,7 +62,7 @@ public class Eventos extends JPanel{
 
     @Override
     public String toString() {
-        return "Eventos{" +
+        return "main.modelo.Eventos{" +
                 "nombre='" + nombre + '\'' +
                 ", fecha=" + fecha +
                 ", edad=" + edad +

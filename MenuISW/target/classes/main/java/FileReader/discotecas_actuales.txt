@@ -1,0 +1,14 @@
+Club Mirage,2024-10-28,35
+Vibe Lounge,2024-10-16,31
+Eclipse Nightclub,2024-10-04,26
+The Pulse,2024-10-18,23
+Nocturna,2024-10-14,34
+Neon Nights,2024-10-09,35
+Electric Avenue,2024-10-19,23
+The Sound House,2024-10-13,34
+Night Oasis,2024-10-12,28
+Midnight Temple,2024-10-22,32
+Club Zenith,2024-10-19,22
+Skyline Bar,2024-10-02,26
+Cosmic Vibes,2024-10-29,20
+Club Inferno,2024-10-09,34
