@@ -1,8 +1,9 @@
 package ui;
 
-import FileReader.Constantes;
+
 import database.DatabaseOperations;
 import modelo.Eventos;
+import resources.Constantes;
 
 import javax.swing.*;
 import java.awt.*;

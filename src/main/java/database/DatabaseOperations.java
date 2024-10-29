@@ -1,6 +1,6 @@
 package database;
 
-import FileReader.Constantes;
+import resources.Constantes;
 import modelo.Eventos;
 import modelo.Usuario;
 
@@ -72,37 +72,22 @@ public class DatabaseOperations {
             // Recorremos los resultados y creamos objetos Evento
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
-                String fechaString = rs.getString("fecha"); // Fecha como string
-                Date fecha = null;
-
-                // Intentamos convertir el String en un objeto Date
-                try {
-                    fecha = Constantes.dateFormat.parse(fechaString);
-                } catch (ParseException e) {
-                    System.out.println("Error al parsear la fecha: " + fechaString);
-                    e.printStackTrace();
-                }
-
+                String f = rs.getString("fecha");
                 int edad = rs.getInt("edad");
+                Date fecha=Constantes.dateFormat.parse(f);
+
 
                 // Creamos un nuevo objeto Evento y lo añadimos a la lista
                 Eventos evento = new Eventos(nombre, fecha, edad);
-                System.out.println("Evento leído: " + evento.toString());
-
-                // Verificamos si el evento es válido y lo añadimos a la lista
-                if (evento != null) {
-                    Constantes.EVENTOS.add(evento);
-                    System.out.println("Evento añadido a la lista: " + evento.toString());
-                }
+                System.out.println(evento.toString());
+                Constantes.EVENTOS.add(evento);
             }
 
         } catch (SQLException e) {
             System.out.println("Error al leer los eventos: " + e.getMessage());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
-
-        // Comprobar cuántos eventos fueron añadidos
-        System.out.println("Número de eventos añadidos: " + Constantes.EVENTOS.size());
     }
-
 
 }

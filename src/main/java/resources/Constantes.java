@@ -1,4 +1,4 @@
-package FileReader;
+package resources;
 
 import modelo.Eventos;
 

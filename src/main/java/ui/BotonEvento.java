@@ -1,10 +1,11 @@
 package ui;
 
-import FileReader.Constantes;
+
 
 import javax.swing.*;
 import java.awt.*;
 import modelo.Eventos;
+import resources.Constantes;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
