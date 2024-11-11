@@ -14,6 +14,7 @@ public class Menu extends JPanel {
 
     public Menu() {
         this.setLayout(new BorderLayout());
+        System.out.println(this.getSize());
 
         // Creamos un panel para los botones y lo añadimos al JScrollPane
         panelDeBotones = new JPanel();

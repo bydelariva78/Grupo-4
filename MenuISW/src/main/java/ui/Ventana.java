@@ -4,14 +4,16 @@ import FileReader.Constantes;
 
 import javax.swing.*;
 import java.awt.*;
+import modelo.Usuario;
 
 public class Ventana extends JFrame {
     private PanelNorth north;
     private ui.Menu center;
+    private Usuario user;
 
-    public Ventana()
+    public Ventana(Usuario user)
     {
-
+        this.user=user;
         init();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -24,6 +26,9 @@ public class Ventana extends JFrame {
 
 
     }
+    public Ventana(){
+
+    }
 
     public void restart()
     {
@@ -32,7 +37,7 @@ public class Ventana extends JFrame {
 
     public void init()
     {
-        north=new PanelNorth(this);
+        north=new PanelNorth(this, user);
         center=new Menu();
 
     }
