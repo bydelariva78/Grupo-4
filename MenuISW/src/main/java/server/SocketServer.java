@@ -95,6 +95,13 @@ public class SocketServer extends Thread {
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
                     break;
+                case "/obtenerEventos":
+                    customerControler = new UsuarioController();
+                    res = customerControler.obtenerEventos();
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
                 default:
                     System.out.println("\nParámetro no encontrado");
                     break;
@@ -116,7 +123,6 @@ public class SocketServer extends Thread {
             }
         }
     }
-
     public static void main(String[] args) {
         System.out.println("SocketServer Example - Listening port "+port);
         ServerSocket server = null;

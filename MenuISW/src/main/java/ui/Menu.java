@@ -1,12 +1,13 @@
 package ui;
 
-import FileReader.Constantes;
-import FileReader.Reader;
+import Client.Client;
 import modelo.Eventos;
+import ui.BotonEvento;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Menu extends JPanel {
     private ArrayList<Eventos> eventos = new ArrayList<Eventos>();
@@ -14,7 +15,6 @@ public class Menu extends JPanel {
 
     public Menu() {
         this.setLayout(new BorderLayout());
-        System.out.println(this.getSize());
 
         // Creamos un panel para los botones y lo añadimos al JScrollPane
         panelDeBotones = new JPanel();
@@ -26,22 +26,22 @@ public class Menu extends JPanel {
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         // Agregamos los eventos
-        start();
+        obtenerEventos();
 
         // Añadimos el JScrollPane al panel principal
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void start() {
-        Reader.leerOpciones();
-        for (int i = 0; i < Constantes.NUMERO_DE_EVENTOS; i++) {
-            Eventos e = new Eventos(Constantes.NOMBRES.get(i), Constantes.FECHAS.get(i), Constantes.EDADES.get(i));
-            System.out.println(Constantes.NOMBRES.get(i));
-            eventos.add(e);
-        }
+    public void obtenerEventos() {
+        Client cliente = new Client(); //aqui no estas instanciando ningun host o port
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/obtenerEventos";
+        session = cliente.sentMessage(context, session);
+        eventos= (ArrayList<Eventos>) session.get("obtenidos");
         init(panelDeBotones);
-
     }
+
+
 
 
     public void init(JPanel panelDeBotones) {
@@ -50,7 +50,6 @@ public class Menu extends JPanel {
 
             botonEvento.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));  // Ancho máximo y altura fija de 100px
             botonEvento.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 
             panelDeBotones.add(botonEvento);
             panelDeBotones.add(Box.createRigidArea(new Dimension(0, 10)));

@@ -1,6 +1,6 @@
 package ui;
 
-import FileReader.Constantes;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import modelo.Usuario;
 
 public class Ventana extends JFrame {
     private PanelNorth north;
-    private ui.Menu center;
+    private Menu center;
     private Usuario user;
 
     public Ventana(Usuario user)
@@ -22,7 +22,7 @@ public class Ventana extends JFrame {
         setLayout(new BorderLayout());
         this.add(north, BorderLayout.NORTH);
         this.add(center, BorderLayout.CENTER);
-        System.out.println(Constantes.NOMBRES.get(1));
+
 
 
     }
@@ -32,12 +32,12 @@ public class Ventana extends JFrame {
 
     public void restart()
     {
-        center.start();
+        center.obtenerEventos();
     }
 
     public void init()
     {
-        north=new PanelNorth(this, user);
+        north=new PanelNorth(this,user);
         center=new Menu();
 
     }

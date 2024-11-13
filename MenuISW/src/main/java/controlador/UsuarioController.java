@@ -25,11 +25,13 @@ public class UsuarioController {
         HashMap<String,Object> res = DatabaseOperations.insertDisco(datos);
         return(res);
     }
-
     public HashMap<String,Object> buscarUsuario(String nombre){
         HashMap<String,Object> res = DatabaseOperations.findUser(nombre);
         return(res);
     }
+
+    public HashMap<String,Object> obtenerEventos(){
+        HashMap<String,Object> res = DatabaseOperations.obtainEvents();
+        return (res);
+    }
 }
-
-

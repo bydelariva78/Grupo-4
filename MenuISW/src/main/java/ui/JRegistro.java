@@ -236,7 +236,7 @@ public class JRegistro extends JFrame implements ActionListener {
         } else if (comprobarContrasenya(con, con2)) {
             comprobarContrasenya.setForeground(Color.GREEN);
 
-            comprobarContrasenya.setText("Ya existe un usuario con ese nombre, prueve con otro");
+            comprobarContrasenya.setText("Ya existe un usuario con ese nombre, pruebe con otro");
             correcto = true;
         } else {
             comprobarContrasenya.setText("Las contraseñas no coinciden");
@@ -245,17 +245,49 @@ public class JRegistro extends JFrame implements ActionListener {
     }
     public boolean crearDiscoteca() {
         boolean correcto = false;
-        //if(campoEdadMinima.equals(""))
+        String nom = nombre.getText();
+        String con = new String(contrasenya.getPassword());
+        String con2 = new String(contrasenya2.getPassword());
 
+        if (checkBoxRegistrarDiscoteca.isSelected()) {
+            if(campoEdadMinima.getText().equals("")) {
+                comprobarContrasenya.setText("Debe rellenar el campo de Edad Minima");
+            }
+            else if(campoDiasApertura.getText().equals("")){
+                comprobarContrasenya.setText("Debe rellenar el campo de Dias de apertura");
+            }
+            else if(campoPrecioMedio.getText().equals("")){
+                comprobarContrasenya.setText("Debe rellenar el campo de Precio Medio");
+            }
+        }
+        if (nom.equals("")) {
+            comprobarContrasenya.setText("Debe rellenar el campo de nombre");
+        } else if (con.length() < 5) {
+            comprobarContrasenya.setText("La contraseña debe tener un mínimo de 5 caracteres");
+        } else if (comprobarContrasenya(con, con2)) {
+            comprobarContrasenya.setForeground(Color.GREEN);
 
-        return(correcto);
+            comprobarContrasenya.setText("Ya existe un usuario con ese nombre, pruebe con otro");
+            correcto = true;
+        } else {
+            comprobarContrasenya.setText("Las contraseñas no coinciden");
+        }
+        return correcto;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(botonRegistrar)) {
-            if (crearUsuario()) {
-                registro();
+            if (!checkBoxRegistrarDiscoteca.isSelected()) {
+                if (crearUsuario()) {
+                    registro();
+                }
+            }else
+            {
+                if(crearDiscoteca())
+                {
+                    registro();
+                }
             }
         }
     }

@@ -1,11 +1,13 @@
 package database;
 
+import modelo.Eventos;
 import modelo.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DatabaseOperations {
@@ -39,6 +41,39 @@ public class DatabaseOperations {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             res.put("registrado", false);
+            return res;
+        }
+    }
+
+    public static HashMap<String, Object> obtainEvents() {
+        String SQL = "SELECT * FROM eventos";
+        HashMap<String, Object> res = new HashMap<>();
+        ArrayList<Eventos> eventos = new ArrayList<Eventos>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Ejecutar la consulta y obtener el resultado
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                try {
+                    String nombre = rs.getString("nombre");
+                    String tipoMusica = rs.getString("tipomusica");
+                    String diasApertura = rs.getString("diasapertura");
+                    String edadMinima = rs.getString("edadminima");
+                    String precioMedio = rs.getString("preciomedio");
+                    Eventos evento = new Eventos(nombre, tipoMusica, diasApertura, edadMinima, precioMedio);
+                    eventos.add(evento);
+                } catch (SQLException e) {
+                    e.printStackTrace();  // Manejo de excepciones
+                }
+            }
+
+            res.put("obtenidos", eventos);
+            return res;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener eventos: " + e.getMessage());
+
             return res;
         }
     }

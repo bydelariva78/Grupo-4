@@ -7,51 +7,22 @@ import java.util.Date;
 
 public class Eventos extends JPanel{
     public String nombre;
-    public Date fecha;
-    public Integer edad;
+    public String tipoMusica;
+    public String diasApertura;
+    public String edadMinima;
+    public String precioMedio;
     public ImageIcon logo;
 
 
-    public Eventos(String nombre, Date fecha, Integer edad) {
+    public Eventos(String nombre, String tipoMusica, String diasApertura, String edadMinima, String precioMedio) {
         this.nombre = nombre;
-        this.fecha = fecha;
-        this.edad = edad;
+        this.tipoMusica = tipoMusica;
+        this.diasApertura = diasApertura;
+        this.edadMinima = edadMinima;
+        this.precioMedio = precioMedio;
         this.add(new BotonEvento(this));
-    }
-
-    public Eventos(String nombre)
-    {
-        this.nombre=nombre;
-    }
-    public Eventos()
-    {
 
     }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public Integer getEdad() {
-        return edad;
-    }
-
-    public void setEdad(Integer edad) {
-        this.edad = edad;
-    }
-
     public ImageIcon getLogo() {
         return logo;
     }
@@ -62,11 +33,14 @@ public class Eventos extends JPanel{
 
     @Override
     public String toString() {
-        return "main.modelo.Eventos{" +
+        return "Eventos{" +
                 "nombre='" + nombre + '\'' +
-                ", fecha=" + fecha +
-                ", edad=" + edad +
+                ", tipoMusica='" + tipoMusica + '\'' +
+                ", diasApertura='" + diasApertura + '\'' +
+                ", edadMinima='" + edadMinima + '\'' +
+                ", precioMedio='" + precioMedio + '\'' +
                 ", logo=" + logo +
                 '}';
+
     }
 }
