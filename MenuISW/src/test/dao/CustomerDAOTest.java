@@ -1,6 +1,8 @@
-package icai.dtc.isw.dao;
+package dao;
 
-import icai.dtc.isw.domain.Customer;
+import database.DatabaseOperations;
+
+import modelo.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,10 +14,7 @@ import static org.mockito.Mockito.*;
 public class CustomerDAOTest {
 
     @Mock
-    private CustomerDAO customerDAO;  // Simulación de CustomerDAO
-
-    @InjectMocks
-    private CustomerDAOTest customerDAOTest; // Inyectar mocks en esta clase
+    private DatabaseOperations customerDAO;  // Simulación de CustomerDAO
 
 
     @BeforeEach
@@ -23,26 +22,25 @@ public class CustomerDAOTest {
         // Inicializar los mocks
         MockitoAnnotations.openMocks(this);
         // Inicializar manualmente el customerDAO
-        customerDAO = mock(CustomerDAO.class);
+        customerDAO = mock(DatabaseOperations.class);
     }
 
     @Test
     public void testGetCustomerById() {
-        // Crear un objeto de cliente simulado
-        Customer expectedCustomer = new Customer("123", "Atilano");
+        Usuario expectedCustomer = new Usuario("jaime", "jaime");
 
         // Simular el comportamiento del método getCliente
-        when(customerDAO.getCliente(123)).thenReturn(expectedCustomer);
+        when(customerDAO.getUser("jaime")).thenReturn(expectedCustomer);
 
         // Llamar al método
-        Customer actualCustomer = customerDAO.getCliente(123);
+        Usuario actualCustomer = customerDAO.getUser("jaime");
 
         // Verificar que el resultado es correcto
         assertNotNull(actualCustomer);
-        assertEquals("123", actualCustomer.getId());
-        assertEquals("Atilano", actualCustomer.getName());
+        assertEquals("jaime", actualCustomer.getNombre());
+        assertEquals("jaime", actualCustomer.getContrasenya());
 
         // Verificar que el método getCliente fue llamado
-        verify(customerDAO, times(1)).getCliente(123);
+        verify(customerDAO, times(1)).getUser("jaime");
     }
 }

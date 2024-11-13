@@ -27,6 +27,15 @@ public class Usuario implements Serializable {
         return contrasenya;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + nombre + '\'' +
+                ", contrasenya='" + contrasenya + '\'' +
+                ", puntos=" + puntos +
+                '}';
+    }
+
     public void setContrasenya(String contrasenya) {
         this.contrasenya = contrasenya;
     }
@@ -34,7 +43,7 @@ public class Usuario implements Serializable {
     public Usuario(String nombre, String contrasenya){
         this.nombre = nombre;
         this.contrasenya = contrasenya;
-        this.puntos=0;
+        this.puntos=100;
 
     }
 }
