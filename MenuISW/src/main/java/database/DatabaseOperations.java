@@ -78,6 +78,36 @@ public class DatabaseOperations {
         }
     }
 
+    public Eventos getEvento(String nombreBuscado) {
+        String SQL = "SELECT * FROM eventos WHERE nombre = ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Sustituir el marcador de posición con el nombre proporcionado
+            pstmt.setString(1, nombreBuscado);
+
+            // Ejecutar la consulta y obtener el resultado
+            ResultSet rs = pstmt.executeQuery();
+
+            // Procesar los resultados
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String tipoMusica = rs.getString("tipomusica");
+                String diasApertura = rs.getString("diasapertura");
+                String edadMinima = rs.getString("edadminima");
+                String precioMedio = rs.getString("preciomedio");
+
+                // Crear y devolver el objeto Evento
+                return new Eventos(nombre, tipoMusica, diasApertura, edadMinima, precioMedio);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de excepciones
+        }
+        return null;
+    }
+
+
 
     // Método para iniciar sesión (verificar credenciales)
     public static HashMap<String,Object> loginUser(String nombre, String contrasenya) {
