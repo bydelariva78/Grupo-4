@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import Client.Client;
 import modelo.Usuario;
-import server.SocketServer;
 
 public class InicioSesion extends JFrame {
 
