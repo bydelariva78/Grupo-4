@@ -78,6 +78,36 @@ public class DatabaseOperations {
         }
     }
 
+    public Eventos getEvento(String nombreBuscado) {
+        String SQL = "SELECT * FROM eventos WHERE nombre = ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Sustituir el marcador de posición con el nombre proporcionado
+            pstmt.setString(1, nombreBuscado);
+
+            // Ejecutar la consulta y obtener el resultado
+            ResultSet rs = pstmt.executeQuery();
+
+            // Procesar los resultados
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String tipoMusica = rs.getString("tipomusica");
+                String diasApertura = rs.getString("diasapertura");
+                String edadMinima = rs.getString("edadminima");
+                String precioMedio = rs.getString("preciomedio");
+
+                // Crear y devolver el objeto Evento
+                return new Eventos(nombre, tipoMusica, diasApertura, edadMinima, precioMedio);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de excepciones
+        }
+        return null;
+    }
+
+
 
     // Método para iniciar sesión (verificar credenciales)
     public static HashMap<String,Object> loginUser(String nombre, String contrasenya) {
@@ -207,6 +237,34 @@ public class DatabaseOperations {
         return userInfo;
     }
 
+    public Usuario getUser(String nombre) {
+        String SQL = "SELECT * FROM usuarios WHERE nombre = ?";
+
+
+        Usuario u = null;
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+            // Establecer el parámetro para la consulta
+            pstmt.setString(1, nombre);
+
+            // Ejecutar la consulta
+            ResultSet rs = pstmt.executeQuery();
+
+            // Si el usuario existe, llenamos el HashMap con su información
+            if (rs.next()) {
+                u = new Usuario(rs.getString("nombre"), rs.getString("contrasenya"));
+                System.out.println("Usuario encontrado");
+            } else {
+                System.out.println("Usuario no encontrado.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al buscar usuario: " + e.getMessage());
+        }
+
+        return u;
+    }
+
     public static boolean comprobarNombre(String nombre, boolean disco){
         String SQLusuario = "SELECT * FROM usuarios WHERE nombre = ?";
         String SQLdisco = "SELECT * FROM eventos WHERE nombre = ?";
@@ -244,6 +302,15 @@ public class DatabaseOperations {
             return nombreExistente;
         }
     }
+
+    public static void main(String[] args)
+    {
+        DatabaseOperations d = new DatabaseOperations();
+        Usuario a=d.getUser("jaime");
+        System.out.println(a.toString());
     }
+    }
+
+
 
 

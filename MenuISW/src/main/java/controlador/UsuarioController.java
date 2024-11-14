@@ -1,12 +1,16 @@
 package controlador;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import database.DatabaseOperations;
+import modelo.Usuario;
 
 import javax.xml.crypto.Data;
 
 public class UsuarioController {
+
+
 
     public HashMap<String,Object> inicioSesion(String nombre, String contrasena){
         HashMap<String,Object> res = DatabaseOperations.loginUser(nombre,contrasena);

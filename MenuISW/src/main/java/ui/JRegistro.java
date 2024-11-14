@@ -1,8 +1,6 @@
 package ui;
 
 import Client.Client;
-import database.DatabaseOperations;
-import modelo.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
-import javax.swing.SwingWorker;
 
 public class JRegistro extends JFrame implements ActionListener {
 
@@ -223,34 +220,18 @@ public class JRegistro extends JFrame implements ActionListener {
         return contrasenya1.equals(contrasenya2);
     }
 
-    public boolean crearUsuario() {
+    public boolean comprobarCampos() {
         String nom = nombre.getText();
         String con = new String(contrasenya.getPassword());
         String con2 = new String(contrasenya2.getPassword());
         boolean correcto = false;
-
-        if (nom.equals("")) {
-            comprobarContrasenya.setText("Debe rellenar el campo de nombre");
-        } else if (con.length() < 5) {
-            comprobarContrasenya.setText("La contraseña debe tener un mínimo de 5 caracteres");
-        } else if (comprobarContrasenya(con, con2)) {
-            comprobarContrasenya.setForeground(Color.GREEN);
-
-            comprobarContrasenya.setText("Ya existe un usuario con ese nombre, pruebe con otro");
-            correcto = true;
-        } else {
-            comprobarContrasenya.setText("Las contraseñas no coinciden");
-        }
-        return correcto;
-    }
-    public boolean crearDiscoteca() {
-        boolean correcto = false;
-        String nom = nombre.getText();
-        String con = new String(contrasenya.getPassword());
-        String con2 = new String(contrasenya2.getPassword());
-
-        if (checkBoxRegistrarDiscoteca.isSelected()) {
-            if(campoEdadMinima.getText().equals("")) {
+        if(checkBoxRegistrarDiscoteca.isSelected()){
+            if (nom.equals("")) {
+                comprobarContrasenya.setText("Debe rellenar el campo de nombre");
+            } else if (con.length() < 5) {
+                comprobarContrasenya.setText("La contraseña debe tener un mínimo de 5 caracteres");
+            }
+            else if(campoEdadMinima.getText().equals("")) {
                 comprobarContrasenya.setText("Debe rellenar el campo de Edad Minima");
             }
             else if(campoDiasApertura.getText().equals("")){
@@ -258,36 +239,37 @@ public class JRegistro extends JFrame implements ActionListener {
             }
             else if(campoPrecioMedio.getText().equals("")){
                 comprobarContrasenya.setText("Debe rellenar el campo de Precio Medio");
+            }else if (comprobarContrasenya(con, con2)) {
+                comprobarContrasenya.setForeground(Color.GREEN);
+                comprobarContrasenya.setText("Ya existe un usuario con ese nombre, prueve con otro");
+                correcto = true;
+            } else {
+                comprobarContrasenya.setText("Las contraseñas no coinciden");
             }
         }
-        if (nom.equals("")) {
-            comprobarContrasenya.setText("Debe rellenar el campo de nombre");
-        } else if (con.length() < 5) {
-            comprobarContrasenya.setText("La contraseña debe tener un mínimo de 5 caracteres");
-        } else if (comprobarContrasenya(con, con2)) {
-            comprobarContrasenya.setForeground(Color.GREEN);
-
-            comprobarContrasenya.setText("Ya existe un usuario con ese nombre, pruebe con otro");
-            correcto = true;
-        } else {
-            comprobarContrasenya.setText("Las contraseñas no coinciden");
+        else{
+            if (nom.equals("")) {
+                comprobarContrasenya.setText("Debe rellenar el campo de nombre");
+            } else if (con.length() < 5) {
+                comprobarContrasenya.setText("La contraseña debe tener un mínimo de 5 caracteres");
+            }
+            else if (comprobarContrasenya(con, con2)) {
+                comprobarContrasenya.setForeground(Color.GREEN);
+                comprobarContrasenya.setText("Ya existe un usuario con ese nombre, prueve con otro");
+                correcto = true;
+            } else {
+                comprobarContrasenya.setText("Las contraseñas no coinciden");
+            }
         }
+
         return correcto;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(botonRegistrar)) {
-            if (!checkBoxRegistrarDiscoteca.isSelected()) {
-                if (crearUsuario()) {
-                    registro();
-                }
-            }else
-            {
-                if(crearDiscoteca())
-                {
-                    registro();
-                }
+            if (comprobarCampos()) {
+                registro();
             }
         }
     }
@@ -320,6 +302,3 @@ public class JRegistro extends JFrame implements ActionListener {
         }
     }
 }
-
-
-
