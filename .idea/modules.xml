@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Grupo-4.iml" filepath="$PROJECT_DIR$/.idea/Grupo-4.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MenuISW/VersionControl.iml" filepath="$PROJECT_DIR$/MenuISW/VersionControl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Version.iml" filepath="$PROJECT_DIR$/.idea/Version.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MenuISW/my-existing-project.iml" filepath="$PROJECT_DIR$/MenuISW/my-existing-project.iml" />
     </modules>
   </component>
 </project>
