@@ -199,7 +199,6 @@ public class InicioSesion extends JFrame {
 
     public static void main(String[] args){
         new InicioSesion();
-        SocketServer.main(args);
     }
 
     public String inicioSesion() {
