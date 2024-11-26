@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a69f481-337f-4b7b-860d-5094f7a1b5c3" name="Changes" comment="" />
+    <list default="true" id="9a69f481-337f-4b7b-860d-5094f7a1b5c3" name="Changes" comment="He añadido el boton de cerrar sesion en el menu principal">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuISW/src/main/java/ui/PanelNorth.java" beforeDir="false" afterPath="$PROJECT_DIR$/MenuISW/src/main/java/ui/PanelNorth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuISW/target/classes/ui/PanelNorth$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/MenuISW/target/classes/ui/PanelNorth$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuISW/target/classes/ui/PanelNorth$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuISW/target/classes/ui/PanelNorth$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuISW/target/classes/ui/PanelNorth$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MenuISW/target/classes/ui/PanelNorth.class" beforeDir="false" afterPath="$PROJECT_DIR$/MenuISW/target/classes/ui/PanelNorth.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,9 +26,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2oqaqbhAYSa1YhcgZTQXCZmiPjo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -26,21 +37,23 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.InicioSesion.executor": "Run",
+    "Application.SocketServer.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Development",
+    "git-widget-placeholder": "inigo",
     "jdk.selected.JAVA_MODULE": "21 (2)",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/mnara/Desktop/3ºTeleco/1ºcuatri/Ingenieria de software/Grupo-4/MenuISW",
+    "last_opened_file_path": "C:/Users/marti/Desktop/Tercero/1er Cuatrimestre/Ingenieria del Software/Grupo-4",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
   }
 }]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-23eed401" />
         <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
       </set>
     </attachedChunks>
@@ -55,5 +68,9 @@
       <updated>1731599753319</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="He añadido el boton de cerrar sesion en el menu principal" />
+    <option name="LAST_COMMIT_MESSAGE" value="He añadido el boton de cerrar sesion en el menu principal" />
   </component>
 </project>
