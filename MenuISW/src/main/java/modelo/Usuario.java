@@ -46,4 +46,8 @@ public class Usuario implements Serializable {
         this.puntos=100;
 
     }
+    public Usuario()
+    {
+
+    }
 }

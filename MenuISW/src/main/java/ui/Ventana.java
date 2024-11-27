@@ -8,12 +8,14 @@ import modelo.Usuario;
 
 public class Ventana extends JFrame {
     private PanelNorth north;
-    private Menu center;
+    private JPanel center;
     private Usuario user;
+    private JPanel panel;
 
-    public Ventana(Usuario user)
+    public Ventana(Usuario user, JPanel panel)
     {
         this.user=user;
+        this.panel=panel;
         init();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -30,16 +32,14 @@ public class Ventana extends JFrame {
 
     }
 
-    public void restart()
-    {
-        center.obtenerEventos();
-    }
-
     public void init()
     {
         north=new PanelNorth(this,user);
-        center=new Menu();
-
+        center=panel;
+        if (panel instanceof Menu)
+        {
+            ((Menu) panel).setVentana(this);
+        }
     }
 
     public static void main (String[] args)
@@ -48,4 +48,7 @@ public class Ventana extends JFrame {
 
     }
 
+    public Usuario getUser() {
+        return user;
+    }
 }

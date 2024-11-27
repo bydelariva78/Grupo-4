@@ -61,7 +61,8 @@ public class DatabaseOperations {
                     String diasApertura = rs.getString("diasapertura");
                     String edadMinima = rs.getString("edadminima");
                     String precioMedio = rs.getString("preciomedio");
-                    Eventos evento = new Eventos(nombre, tipoMusica, diasApertura, edadMinima, precioMedio);
+                    String descripcion=rs.getString("descripcion");
+                    Eventos evento = new Eventos(nombre, tipoMusica, diasApertura, edadMinima, precioMedio, descripcion);
                     eventos.add(evento);
                 } catch (SQLException e) {
                     e.printStackTrace();  // Manejo de excepciones
@@ -97,9 +98,10 @@ public class DatabaseOperations {
                 String diasApertura = rs.getString("diasapertura");
                 String edadMinima = rs.getString("edadminima");
                 String precioMedio = rs.getString("preciomedio");
+                String descripcion=rs.getString("descripcion");
 
                 // Crear y devolver el objeto Evento
-                return new Eventos(nombre, tipoMusica, diasApertura, edadMinima, precioMedio);
+                return new Eventos(nombre, tipoMusica, diasApertura, edadMinima, precioMedio, descripcion);
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Manejo de excepciones
