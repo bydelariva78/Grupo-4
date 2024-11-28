@@ -44,6 +44,8 @@ public class SocketServer extends Thread {
             Message mensajeOut=new Message();
             HashMap<String,Object> session=mensajeIn.getSession();
             UsuarioController customerControler;
+            String evento;
+            String comentario;
             String nombre;
             String contrasena;
             HashMap<String, Object> res;
@@ -102,6 +104,21 @@ public class SocketServer extends Thread {
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
                     break;
+                case "/guardarComentario":
+                    evento=(String) session.get("evento");
+                    comentario=(String) session.get("comentario");
+                    customerControler = new UsuarioController();
+                    res = customerControler.guardarComentario(evento,comentario);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                case "/getComentario":
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.getComentarios(evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
                 default:
                     System.out.println("\nParámetro no encontrado");
                     break;

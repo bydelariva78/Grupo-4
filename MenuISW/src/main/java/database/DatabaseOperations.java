@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DatabaseOperations {
 
@@ -239,6 +240,31 @@ public class DatabaseOperations {
         return userInfo;
     }
 
+    public static HashMap<String, Object> getComments(String eventoNombre) {
+        String SQL = "SELECT comentarios FROM eventos WHERE nombre = ?";
+        HashMap<String, Object> comentariosMap = new HashMap<>();
+        List<String> comentarios = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+            pstmt.setString(1, eventoNombre);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String[] comentariosArray = (String[]) rs.getArray("comentarios").getArray();
+                for (String comentario : comentariosArray) {
+                    comentarios.add(comentario);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener los comentarios: " + e.getMessage());
+        }
+
+        comentariosMap.put("comentarios", comentarios);
+        return comentariosMap;
+    }
+
+
     public Usuario getUser(String nombre) {
         String SQL = "SELECT * FROM usuarios WHERE nombre = ?";
 
@@ -266,6 +292,28 @@ public class DatabaseOperations {
 
         return u;
     }
+
+    public static HashMap<String, Object> saveComment(String eventoNombre, String comentario) {
+        String SQL = "UPDATE eventos SET comentarios = array_append(comentarios, ?) WHERE nombre = ?";
+        HashMap<String, Object> res = new HashMap<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+            pstmt.setString(1, comentario);
+            pstmt.setString(2, eventoNombre);
+            int rowsUpdated = pstmt.executeUpdate();
+            res.put("exito", rowsUpdated > 0);
+            if (rowsUpdated == 0) {
+                res.put("mensaje", "Evento no encontrado.");
+            }
+        } catch (SQLException e) {
+            res.put("exito", false);
+            res.put("error", e.getMessage());
+        }
+
+        return res;
+    }
+
 
     public static boolean comprobarNombre(String nombre, boolean disco){
         String SQLusuario = "SELECT * FROM usuarios WHERE nombre = ?";

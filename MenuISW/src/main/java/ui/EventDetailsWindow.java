@@ -11,20 +11,26 @@ import java.util.HashMap;
 
 public class EventDetailsWindow extends JPanel {
 
+    private JTextArea commentArea;
+
+    private Usuario user;
     private Eventos event;
+
     private String eventName;
     private String description;
     private String edad;
     private String precio;
     private String musica;
     private String dia;
+
     private DefaultListModel<String> commentListModel;
 
 
 
     private static final String texto_null="El creador de este evento todavía no ha introducido una descripción del mismo. ¡Pronto encontrarás la descripción del evento";
 
-    public EventDetailsWindow(Eventos evento) {
+    public EventDetailsWindow(Eventos evento, Usuario user) {
+        this.user=user;
         this.event=evento;
         this.eventName=evento.getNombre();
         this.description=evento.getDescripcion();
@@ -33,6 +39,7 @@ public class EventDetailsWindow extends JPanel {
         this.precio=evento.getEdadMinima();
         this.musica=evento.getTipoMusica();
         init();
+        actualizarCommentListModel();
     }
 
     private void init() {
@@ -118,7 +125,7 @@ public class EventDetailsWindow extends JPanel {
 
         JPanel commentPanel = new JPanel(new BorderLayout());
         commentPanel.setBackground(new Color(30, 30, 30));
-        JTextArea commentArea = new JTextArea();
+        commentArea = new JTextArea();
         commentArea.setLineWrap(true);
         commentArea.setWrapStyleWord(true);
         commentArea.setBackground(new Color(60, 60, 60));
@@ -152,8 +159,10 @@ public class EventDetailsWindow extends JPanel {
         uploadCommentButton.addActionListener(e -> {
             String newComment = commentArea.getText().trim();
             if (!newComment.isEmpty()) {
-                commentListModel.addElement("Tú: " + newComment);
+                guardarComent();
+                user.setPuntos(user.getPuntos()+5);
                 commentArea.setText("");
+                actualizarCommentListModel();
             }
         });
 
@@ -179,6 +188,54 @@ public class EventDetailsWindow extends JPanel {
         label.setForeground(Color.LIGHT_GRAY);
         return label;
     }
+
+    public void guardarComent() {
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/guardarComentario";
+        session.put("evento", eventName);
+        session.put("comentario", user.getNombre()+ ": " +commentArea.getText());
+        session=cliente.sentMessage(context,session);
+
+    }
+
+    public ArrayList<String> getComent() {
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/getComentario";
+        session.put("evento", eventName);
+        session = cliente.sentMessage(context, session);
+
+        ArrayList<String> comentarios = new ArrayList<>();
+        if (session.containsKey("comentarios")) {
+            Object comentariosObj = session.get("comentarios");
+            if (comentariosObj instanceof ArrayList) {
+                comentarios = (ArrayList<String>) comentariosObj;
+            }
+        }
+
+        // Verifica si la lista está vacía
+        if (comentarios.isEmpty()) {
+            System.out.println("No hay comentarios para este evento.");
+        }
+
+        return comentarios;
+    }
+
+
+    public void actualizarCommentListModel() {
+        ArrayList<String> comentarios = getComent();
+        commentListModel.clear();
+
+        if (comentarios.isEmpty()) {
+            commentListModel.addElement("No hay comentarios disponibles para este evento.");
+        } else {
+            for (String comentario : comentarios) {
+                commentListModel.addElement(comentario);
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
     }

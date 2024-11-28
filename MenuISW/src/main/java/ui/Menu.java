@@ -65,7 +65,7 @@ public class Menu extends JPanel {
             botonEvento.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new Ventana(user, new EventDetailsWindow(evento));
+                    new Ventana(user, new EventDetailsWindow(evento, user));
                     ventana.dispose();
                 }
             });
