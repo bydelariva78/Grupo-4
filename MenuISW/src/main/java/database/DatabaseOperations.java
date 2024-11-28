@@ -77,8 +77,8 @@ public class DatabaseOperations {
             return res;
         }
     }
-
-    public Eventos getEvento(String nombreBuscado) {
+    //contraseña?
+    public static Eventos getEvento(String nombreBuscado) {
         String SQL = "SELECT * FROM eventos WHERE nombre = ?";
 
         try (Connection conn = DatabaseConnection.connect();
@@ -141,6 +141,9 @@ public class DatabaseOperations {
             return res;
         }
     }
+
+    //Me gustaría cambiar aqui que no devuelva en el hashmap una varible de tipo usuario sino de tipo evento.
+    //A la hora de crear la VentanaMenu es necesario.  query select diasapertura, edadminima, preciomedio, tipomusica from eventos where nombre = 'Blackhouse'
     public static HashMap<String, Object> loginDisco(String nombre, String contrasena){
         String SQL = "SELECT * FROM eventos WHERE nombre = ? AND contrasenya = ?";
         HashMap<String,Object> res = new HashMap<>();
@@ -157,7 +160,7 @@ public class DatabaseOperations {
             // Si hay un resultado, las credenciales son correctas
             if (rs.next()) {
                 System.out.println("Inicio de sesión de discoteca exitoso");
-                res.put("usuario",new Usuario(nombre,contrasena));
+                res.put("evento",getEvento(nombre));
                 res.put("encontrado",true);
                 return res;
             } else {
