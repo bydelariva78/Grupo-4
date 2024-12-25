@@ -293,18 +293,22 @@ public class DatabaseOperations {
         return u;
     }
 
-    public static HashMap<String, Object> saveComment(String eventoNombre, String comentario) {
-        String SQL = "UPDATE eventos SET comentarios = array_append(comentarios, ?) WHERE nombre = ?";
+    public static HashMap<String, Object> saveComment(String eventoNombre, String usuario, String comentario) {
+        String SQL = "INSERT INTO Comentarios (evento, usuario, comentario) VALUES (?, ?, ?)";
         HashMap<String, Object> res = new HashMap<>();
 
-        try (Connection conn = DatabaseConnection.connect();
-             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
-            pstmt.setString(1, comentario);
-            pstmt.setString(2, eventoNombre);
-            int rowsUpdated = pstmt.executeUpdate();
-            res.put("exito", rowsUpdated > 0);
-            if (rowsUpdated == 0) {
-                res.put("mensaje", "Evento no encontrado.");
+        try (Connection conn = DatabaseConnection.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, eventoNombre);
+            pstmt.setString(2, usuario);
+            pstmt.setString(3, comentario);
+
+            int rowsInserted = pstmt.executeUpdate();
+            res.put("exito", rowsInserted > 0);
+            if (rowsInserted > 0) {
+                res.put("mensaje", "Comentario agregado correctamente.");
+            } else {
+                res.put("mensaje", "No se pudo agregar el comentario.");
             }
         } catch (SQLException e) {
             res.put("exito", false);
@@ -313,6 +317,7 @@ public class DatabaseOperations {
 
         return res;
     }
+
 
 
     public static boolean comprobarNombre(String nombre, boolean disco){

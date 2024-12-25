@@ -1,6 +1,7 @@
 package ui;
 
 import Client.Client;
+import modelo.Comentario;
 import modelo.Eventos;
 import modelo.Usuario;
 
@@ -27,7 +28,7 @@ public class EventDetailsWindow extends JPanel {
 
 
 
-    private static final String texto_null="El creador de este evento todavía no ha introducido una descripción del mismo. ¡Pronto encontrarás la descripción del evento";
+    private static final String texto_null="El creador de este evento todavía no ha introducido una descripción del mismo. ¡Pronto encontrarás la descripción del evento!";
 
     public EventDetailsWindow(Eventos evento, Usuario user) {
         this.user=user;
@@ -193,8 +194,8 @@ public class EventDetailsWindow extends JPanel {
         Client cliente = new Client();
         HashMap<String, Object> session = new HashMap<>();
         String context = "/guardarComentario";
-        session.put("evento", eventName);
-        session.put("comentario", user.getNombre()+ ": " +commentArea.getText());
+        Comentario comentario= new Comentario(commentArea.getText(),user, event);
+        session.put("comentario", comentario);
         session=cliente.sentMessage(context,session);
 
     }

@@ -14,6 +14,8 @@ import java.util.Locale;
 
 import Properties.PropertiesISW;
 import controlador.UsuarioController;
+import modelo.Comentario;
+import modelo.Eventos;
 import modelo.Usuario;
 import message.Message;
 
@@ -48,6 +50,7 @@ public class SocketServer extends Thread {
             String comentario;
             String nombre;
             String contrasena;
+            Comentario comment;
             HashMap<String, Object> res;
             switch (mensajeIn.getContext()) {
                 case "/inicioSesion":
@@ -105,10 +108,12 @@ public class SocketServer extends Thread {
                     objectOutputStream.writeObject(mensajeOut);
                     break;
                 case "/guardarComentario":
-                    evento=(String) session.get("evento");
-                    comentario=(String) session.get("comentario");
+                    comment=(Comentario) session.get("comentario");
+                    evento=comment.getEvento().getNombre();
+                    comentario=comment.getComentario();
+                    nombre=comment.getUser().getNombre();
                     customerControler = new UsuarioController();
-                    res = customerControler.guardarComentario(evento,comentario);
+                    res = customerControler.guardarComentario(evento,comentario,nombre);
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);

@@ -39,8 +39,8 @@ public class UsuarioController {
         return (res);
     }
 
-    public HashMap<String,Object> guardarComentario(String evento, String comentario){
-        HashMap<String,Object> res = DatabaseOperations.saveComment(evento, comentario);
+    public HashMap<String,Object> guardarComentario(String evento, String comentario, String nombre){
+        HashMap<String,Object> res = DatabaseOperations.saveComment(evento, comentario, nombre);
         return (res);
     }
 
