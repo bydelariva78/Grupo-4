@@ -11,8 +11,19 @@ import javax.xml.crypto.Data;
 
 public class UsuarioController {
 
+    public HashMap<String,Object> checkFavorito( String nombre, String evento)
+    {
+        HashMap<String,Object> res= DatabaseOperations.checkFav(nombre,evento);
+        return  res;
 
+    }
 
+    public HashMap<String,Object> makeFavorito(Boolean make, String nombre, String evento)
+    {
+        HashMap<String,Object> res= DatabaseOperations.makeFav(make,nombre,evento);
+        return  res;
+
+    }
     public HashMap<String,Object> inicioSesion(String nombre, String contrasena){
         HashMap<String,Object> res = DatabaseOperations.loginUser(nombre,contrasena);
         return res;

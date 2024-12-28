@@ -26,6 +26,16 @@ public class Eventos extends JPanel{
 
     }
 
+    public Eventos(String nombre, String tipoMusica, String diasApertura, String edadMinima, String precioMedio) {
+        this.nombre = nombre;
+        this.tipoMusica = tipoMusica;
+        this.diasApertura = diasApertura;
+        this.edadMinima = edadMinima;
+        this.precioMedio = precioMedio;
+        this.add(new BotonEvento(this));
+
+    }
+
     public String getDescripcion() {
         return descripcion;
     }

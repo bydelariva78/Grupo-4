@@ -7,12 +7,15 @@ import modelo.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EventDetailsWindow extends JPanel {
 
     private JTextArea commentArea;
+    private JButton favButton;
 
     private Usuario user;
     private Eventos event;
@@ -23,6 +26,9 @@ public class EventDetailsWindow extends JPanel {
     private String precio;
     private String musica;
     private String dia;
+    private final String fav= "Quitar de favoritos";
+    private final String notfav= "Hacer favorito";
+
 
     private DefaultListModel<String> commentListModel;
 
@@ -109,12 +115,26 @@ public class EventDetailsWindow extends JPanel {
         actionPanel.setBackground(new Color(30, 30, 30));
         actionPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JCheckBox favoriteCheckbox = new JCheckBox("Marcar como Favorito");
-        favoriteCheckbox.setFont(new Font("Arial", Font.BOLD, 16));
-        favoriteCheckbox.setBackground(new Color(70, 130, 180));
-        favoriteCheckbox.setForeground(Color.WHITE);
-        favoriteCheckbox.setFocusPainted(false);
-        favoriteCheckbox.setHorizontalAlignment(SwingConstants.CENTER);
+
+        favButton= favButton();
+        favButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (favButton.getLabel()==fav)
+                {
+                    makeFavorito(true);
+                    favButton.setLabel(notfav);
+                } else if (favButton.getLabel()==notfav){
+                    makeFavorito(false);
+                    favButton.setLabel(fav);
+                }
+            }
+        });
+        favButton.setFont(new Font("Arial", Font.BOLD, 16));
+        favButton.setBackground(new Color(70, 130, 180));
+        favButton.setForeground(Color.WHITE);
+        favButton.setFocusPainted(false);
+        favButton.setHorizontalAlignment(SwingConstants.CENTER);
 
         JButton attendButton = new JButton("Voy a asistir");
         attendButton.setBackground(new Color(34, 139, 34));
@@ -169,13 +189,27 @@ public class EventDetailsWindow extends JPanel {
             }
         });
 
-        actionPanel.add(favoriteCheckbox);
+        actionPanel.add(favButton);
         actionPanel.add(attendButton);
         actionPanel.add(commentLabel);
         actionPanel.add(commentPanel);
 
         add(actionPanel, BorderLayout.SOUTH);
         add(commentsBlockPanel, BorderLayout.EAST);
+    }
+
+    private JButton favButton()
+    {
+        JButton button;
+        if (checkFavorito()){
+            button=new JButton();
+            button.setLabel(fav);
+        }
+        else{
+            button=new JButton();
+            button.setLabel(notfav);
+        }
+        return button;
     }
 
     private JLabel createDetailLabel(String text) {
@@ -228,6 +262,50 @@ public class EventDetailsWindow extends JPanel {
         System.out.println("guardando comment...");
     }
 
+    public boolean checkFavorito()
+    {
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/checkFavorito";
+        session.put("evento",event.getNombre());
+        System.out.println(event.getNombre());
+        session.put("usuario",user.getNombre());
+        try {
+            session = cliente.sentMessage(context, session);
+            if (session.containsKey("error")) {
+                System.out.println("Error al checkear fav: " + session.get("error"));
+            } else {
+                System.out.println("Éxito");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al cehckear fav: " + e.getMessage());
+        }
+
+        Boolean res=(Boolean) session.get("result");
+        System.out.println(res);
+        return res;
+    }
+
+    public void makeFavorito(Boolean b)
+    {
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/makeFavorito";
+        session.put("make",b);
+        session.put("evento",event.getNombre());
+        session.put("usuario",user.getNombre());
+        try {
+            session = cliente.sentMessage(context, session);
+            if (session.containsKey("error")) {
+                System.out.println("Error al amrcar fav: " + session.get("error"));
+            } else {
+                System.out.println("Éxito");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al marcar fav: " + e.getMessage());
+        }
+
+    }
 
     public ArrayList<Comentario> getComent() {
         Client cliente = new Client();

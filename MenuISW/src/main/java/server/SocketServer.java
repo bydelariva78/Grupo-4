@@ -51,6 +51,7 @@ public class SocketServer extends Thread {
             String nombre;
             String contrasena;
             Comentario comment;
+            Boolean make;
             HashMap<String, Object> res;
             switch (mensajeIn.getContext()) {
                 case "/inicioSesion":
@@ -107,6 +108,25 @@ public class SocketServer extends Thread {
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
                     break;
+                case "/makeFavorito":
+                    make=(Boolean) session.get("make");
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.makeFavorito(make,nombre,evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/checkFavorito":
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.checkFavorito(nombre,evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+
                 case "/guardarComentario":
                     comment=(Comentario) session.get("comentario");
                     customerControler = new UsuarioController();
