@@ -209,7 +209,7 @@ public class InicioSesion extends JFrame {
         session = cliente.sentMessage(context, session);
         if (session.get("encontrado").equals(true)) {
             Usuario user = (Usuario) session.get("usuario");
-            new Ventana(user);
+            new Ventana(user, new Menu(user));
             dispose();
             return ("Bienvenido " + user.getNombre());
         } else {
@@ -225,7 +225,7 @@ public class InicioSesion extends JFrame {
         session = cliente.sentMessage(context, session);
         if (session.get("encontrado").equals(true)) {
             Usuario user = (Usuario) session.get("usuario");
-            new Ventana(user);
+            new Ventana(user, new Menu(user));
             dispose();
             return ("Bienvenido " + user.getNombre());
         } else {

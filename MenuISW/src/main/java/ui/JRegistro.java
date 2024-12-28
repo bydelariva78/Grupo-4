@@ -233,6 +233,10 @@ public class JRegistro extends JFrame implements ActionListener {
             }
             else if(campoEdadMinima.getText().equals("")) {
                 comprobarContrasenya.setText("Debe rellenar el campo de Edad Minima");
+                if (Integer.parseInt(campoEdadMinima.getText())<18)
+                {
+                    comprobarContrasenya.setText("debe de introducior una edad mínima legal");
+                }
             }
             else if(campoDiasApertura.getText().equals("")){
                 comprobarContrasenya.setText("Debe rellenar el campo de Dias de apertura");

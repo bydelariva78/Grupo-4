@@ -2,19 +2,26 @@ package ui;
 
 import Client.Client;
 import modelo.Eventos;
+import modelo.Usuario;
 import ui.BotonEvento;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Menu extends JPanel {
     private ArrayList<Eventos> eventos = new ArrayList<Eventos>();
     private JPanel panelDeBotones;
+    private JFrame ventana;
+    private Usuario user;
 
-    public Menu() {
+    public Menu(Usuario user) {
         this.setLayout(new BorderLayout());
+        this.user=user;
+
 
         // Creamos un panel para los botones y lo añadimos al JScrollPane
         panelDeBotones = new JPanel();
@@ -32,6 +39,14 @@ public class Menu extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
+    public JFrame getVentana() {
+        return ventana;
+    }
+
+    public void setVentana(JFrame ventana) {
+        this.ventana = ventana;
+    }
+
     public void obtenerEventos() {
         Client cliente = new Client(); //aqui no estas instanciando ningun host o port
         HashMap<String, Object> session = new HashMap<>();
@@ -47,6 +62,13 @@ public class Menu extends JPanel {
     public void init(JPanel panelDeBotones) {
         for (Eventos evento : eventos) {
             BotonEvento botonEvento = new BotonEvento(evento);
+            botonEvento.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new Ventana(user, new EventDetailsWindow(evento, user));
+                    ventana.dispose();
+                }
+            });
 
             botonEvento.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));  // Ancho máximo y altura fija de 100px
             botonEvento.setAlignmentX(Component.CENTER_ALIGNMENT);

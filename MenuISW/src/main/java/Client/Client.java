@@ -71,6 +71,7 @@ public class Client {
                 System.exit(1);
             } catch (IOException e) {
                 System.err.println("Unable to get streams from server");
+                System.out.println(e.getMessage());
                 System.exit(1);
             }
 

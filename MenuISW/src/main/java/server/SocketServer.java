@@ -14,6 +14,8 @@ import java.util.Locale;
 
 import Properties.PropertiesISW;
 import controlador.UsuarioController;
+import modelo.Comentario;
+import modelo.Eventos;
 import modelo.Usuario;
 import message.Message;
 
@@ -44,8 +46,11 @@ public class SocketServer extends Thread {
             Message mensajeOut=new Message();
             HashMap<String,Object> session=mensajeIn.getSession();
             UsuarioController customerControler;
+            String evento;
+            String comentario;
             String nombre;
             String contrasena;
+            Comentario comment;
             HashMap<String, Object> res;
             switch (mensajeIn.getContext()) {
                 case "/inicioSesion":
@@ -98,6 +103,26 @@ public class SocketServer extends Thread {
                 case "/obtenerEventos":
                     customerControler = new UsuarioController();
                     res = customerControler.obtenerEventos();
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/guardarComentario":
+                    comment=(Comentario) session.get("comentario");
+                    customerControler = new UsuarioController();
+                    res = customerControler.guardarComentario(comment);
+                    if (comment.getEvento()!=null)
+                    {
+                        System.out.println("FUNCIONA");
+                    }
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/getComentario":
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.getComentarios(evento);
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);

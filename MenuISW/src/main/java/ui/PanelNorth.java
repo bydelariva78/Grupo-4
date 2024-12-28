@@ -99,7 +99,7 @@ public class PanelNorth extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ventana.dispose();
-                new Ventana(user);
+                new Ventana(user, new Menu(user));
             }
         });
     }
