@@ -17,7 +17,7 @@ public class EventDetailsWindow extends JPanel {
     private Usuario user;
     private Eventos event;
 
-    private String eventName;
+    public String eventName;
     private String description;
     private String edad;
     private String precio;
@@ -41,6 +41,7 @@ public class EventDetailsWindow extends JPanel {
         this.musica=evento.getTipoMusica();
         init();
         actualizarCommentListModel();
+        System.out.println(evento.getNombre());
     }
 
     private void init() {
@@ -161,6 +162,7 @@ public class EventDetailsWindow extends JPanel {
             String newComment = commentArea.getText().trim();
             if (!newComment.isEmpty()) {
                 guardarComent();
+                System.out.println("funciona");
                 user.setPuntos(user.getPuntos()+5);
                 commentArea.setText("");
                 actualizarCommentListModel();
@@ -194,24 +196,51 @@ public class EventDetailsWindow extends JPanel {
         Client cliente = new Client();
         HashMap<String, Object> session = new HashMap<>();
         String context = "/guardarComentario";
-        Comentario comentario= new Comentario(commentArea.getText(),user, event);
-        session.put("comentario", comentario);
-        session=cliente.sentMessage(context,session);
 
+        // Validar datos antes de enviar
+        if (commentArea.getText() == null || commentArea.getText().isEmpty()) {
+            System.out.println("El comentario no puede estar vacío.");
+            return;
+        }
+        if (user == null || user.getNombre() == null || event == null || event.getNombre() == null) {
+            System.out.println("Datos del usuario o evento no válidos.");
+            return;
+        }
+
+        // Crear el objeto Comentario
+        Comentario comentario = new Comentario(commentArea.getText(), user.getNombre(), event.getNombre());
+        System.out.println(comentario.toString());
+
+        session.put("comentario", comentario);
+
+        // Enviar datos al servidor y manejar la respuesta
+        try {
+            session = cliente.sentMessage(context, session);
+            if (session.containsKey("error")) {
+                System.out.println("Error al guardar el comentario: " + session.get("error"));
+            } else {
+                System.out.println("Comentario guardado con éxito.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al guardar el comentario: " + e.getMessage());
+        }
+
+        System.out.println("guardando comment...");
     }
 
-    public ArrayList<String> getComent() {
+
+    public ArrayList<Comentario> getComent() {
         Client cliente = new Client();
         HashMap<String, Object> session = new HashMap<>();
         String context = "/getComentario";
         session.put("evento", eventName);
         session = cliente.sentMessage(context, session);
 
-        ArrayList<String> comentarios = new ArrayList<>();
+        ArrayList<Comentario> comentarios = new ArrayList<>();
         if (session.containsKey("comentarios")) {
             Object comentariosObj = session.get("comentarios");
             if (comentariosObj instanceof ArrayList) {
-                comentarios = (ArrayList<String>) comentariosObj;
+                comentarios = (ArrayList<Comentario>) comentariosObj;
             }
         }
 
@@ -225,14 +254,14 @@ public class EventDetailsWindow extends JPanel {
 
 
     public void actualizarCommentListModel() {
-        ArrayList<String> comentarios = getComent();
+        ArrayList<Comentario> comentarios = getComent();
         commentListModel.clear();
 
         if (comentarios.isEmpty()) {
             commentListModel.addElement("No hay comentarios disponibles para este evento.");
         } else {
-            for (String comentario : comentarios) {
-                commentListModel.addElement(comentario);
+            for (int i=0; i<comentarios.size();i++) {
+                commentListModel.addElement(comentarios.get(i).toString());
             }
         }
     }

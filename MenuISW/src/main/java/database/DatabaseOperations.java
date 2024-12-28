@@ -1,12 +1,10 @@
 package database;
 
+import modelo.Comentario;
 import modelo.Eventos;
 import modelo.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -240,29 +238,28 @@ public class DatabaseOperations {
         return userInfo;
     }
 
-    public static HashMap<String, Object> getComments(String eventoNombre) {
-        String SQL = "SELECT comentarios FROM eventos WHERE nombre = ?";
-        HashMap<String, Object> comentariosMap = new HashMap<>();
-        List<String> comentarios = new ArrayList<>();
+    public static HashMap<String, Object> getComments(String eventName) {
+        String SQL = "SELECT comentario, usuario FROM comentarios WHERE evento = ?";
+        HashMap<String,Object> comments = new HashMap<>();
+        ArrayList<Comentario> commentarios = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.connect();
-             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
-            pstmt.setString(1, eventoNombre);
+        try (Connection conn = DatabaseConnection.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(SQL);
+            pstmt.setString(1, eventName);
+
             ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                String[] comentariosArray = (String[]) rs.getArray("comentarios").getArray();
-                for (String comentario : comentariosArray) {
-                    comentarios.add(comentario);
-                }
+            while (rs.next()) {
+                Comentario comm = new Comentario(rs.getString("comentario"),rs.getString("usuario"),eventName);
+                commentarios.add(comm);
             }
+            comments.put("comentarios",commentarios);
         } catch (SQLException e) {
-            System.out.println("Error al obtener los comentarios: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        comentariosMap.put("comentarios", comentarios);
-        return comentariosMap;
+        return comments;
     }
+
 
 
     public Usuario getUser(String nombre) {
@@ -293,30 +290,27 @@ public class DatabaseOperations {
         return u;
     }
 
-    public static HashMap<String, Object> saveComment(String eventoNombre, String usuario, String comentario) {
-        String SQL = "INSERT INTO Comentarios (evento, usuario, comentario) VALUES (?, ?, ?)";
-        HashMap<String, Object> res = new HashMap<>();
+    public static HashMap<String, Object> saveComment(Comentario comentario) {
+        String SQL = "INSERT INTO comentarios(comentario, usuario, evento) VALUES (?, ?, ?)";
+        HashMap<String,Object> res = new HashMap<>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 
-        try (Connection conn = DatabaseConnection.connect()) {
-            PreparedStatement pstmt = conn.prepareStatement(SQL);
-            pstmt.setString(1, eventoNombre);
-            pstmt.setString(2, usuario);
-            pstmt.setString(3, comentario);
-
-            int rowsInserted = pstmt.executeUpdate();
-            res.put("exito", rowsInserted > 0);
-            if (rowsInserted > 0) {
-                res.put("mensaje", "Comentario agregado correctamente.");
-            } else {
-                res.put("mensaje", "No se pudo agregar el comentario.");
-            }
+            // Establecer los parámetros para la consulta
+            pstmt.setString(1,comentario.getComentario());
+            pstmt.setString(2, comentario.getUser());
+            pstmt.setString(3,comentario.getEvento());
+            pstmt.executeUpdate();
+            System.out.println("Comentario guardado con exito");
+            res.put("guardado", true);
+            return res;
         } catch (SQLException e) {
-            res.put("exito", false);
-            res.put("error", e.getMessage());
+            System.out.println(e.getMessage());
+            res.put("guardado", false);
+            return res;
         }
-
-        return res;
     }
+
 
 
 
@@ -358,11 +352,19 @@ public class DatabaseOperations {
         }
     }
 
-    public static void main(String[] args)
-    {
-        DatabaseOperations d = new DatabaseOperations();
-        Usuario a=d.getUser("jaime");
-        System.out.println(a.toString());
+    public static void main(String[] args) {
+        try (Connection conn = DatabaseConnection.connect()) {
+            if (conn != null) {
+                System.out.println("Conexión exitosa");
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM comentarios");
+                while (rs.next()) {
+                    System.out.println(rs.getString("comment"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     }
 

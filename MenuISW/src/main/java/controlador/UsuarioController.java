@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import database.DatabaseOperations;
+import modelo.Comentario;
 import modelo.Usuario;
 
 import javax.xml.crypto.Data;
@@ -39,8 +40,12 @@ public class UsuarioController {
         return (res);
     }
 
-    public HashMap<String,Object> guardarComentario(String evento, String comentario, String nombre){
-        HashMap<String,Object> res = DatabaseOperations.saveComment(evento, comentario, nombre);
+    public HashMap<String,Object> guardarComentario(Comentario comentario){
+        HashMap<String,Object> res = DatabaseOperations.saveComment(comentario);
+        if(comentario.getEvento()!=null)
+            {
+                System.out.println("FUNCIONA");
+            }
         return (res);
     }
 

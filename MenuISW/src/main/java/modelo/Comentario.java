@@ -1,29 +1,25 @@
 package modelo;
+import java.io.Serializable;
 
-public class Comentario {
-    public Usuario user;
+public class Comentario implements Serializable {
+    public String user;
     public String comentario;
-    public Eventos evento;
+    public String evento;
 
-    public Comentario(String comentario, Usuario user, Eventos evento) {
+    private static final long serialVersionUID = 1L;
+
+
+    public Comentario(String comentario, String nombreuser, String  nomevento) {
         this.comentario = comentario;
-        this.user = user;
-        this.evento=evento;
+        this.user = nombreuser;
+        this.evento=nomevento;
     }
 
-    public Eventos getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Eventos evento) {
-        this.evento = evento;
-    }
-
-    public Usuario getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(Usuario user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
@@ -33,5 +29,22 @@ public class Comentario {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public String getEvento() {
+        return evento;
+    }
+
+    public void setEvento(String evento) {
+        this.evento = evento;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(user);
+        sb.append(":");
+        sb.append(comentario);
+        return sb.toString();
     }
 }

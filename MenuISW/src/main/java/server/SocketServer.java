@@ -109,14 +109,16 @@ public class SocketServer extends Thread {
                     break;
                 case "/guardarComentario":
                     comment=(Comentario) session.get("comentario");
-                    evento=comment.getEvento().getNombre();
-                    comentario=comment.getComentario();
-                    nombre=comment.getUser().getNombre();
                     customerControler = new UsuarioController();
-                    res = customerControler.guardarComentario(evento,comentario,nombre);
+                    res = customerControler.guardarComentario(comment);
+                    if (comment.getEvento()!=null)
+                    {
+                        System.out.println("FUNCIONA");
+                    }
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
+                    break;
                 case "/getComentario":
                     evento=(String) session.get("evento");
                     customerControler = new UsuarioController();
@@ -124,6 +126,7 @@ public class SocketServer extends Thread {
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
+                    break;
                 default:
                     System.out.println("\nParámetro no encontrado");
                     break;
