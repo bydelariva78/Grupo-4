@@ -1,7 +1,5 @@
 package ui;
 
-import FileReader.Constantes;
-
 import javax.swing.*;
 import java.awt.*;
 import modelo.Eventos;
@@ -58,7 +56,7 @@ public class BotonEvento extends JButton {
         JLabel label2 = new JLabel();
         label2.setFont(font2);
         label2.setForeground(Color.LIGHT_GRAY);
-        label2.setText(Constantes.dateFormat.format(eventos.fecha));
+        label2.setText("Dias de apertura:" + eventos.diasApertura);
         panel.add(label2);
 
         // Edad mínima
@@ -66,10 +64,25 @@ public class BotonEvento extends JButton {
         JLabel label3 = new JLabel();
         label3.setFont(font3);
         label3.setForeground(Color.LIGHT_GRAY);
-        label3.setText("EDAD: " + eventos.edad);
+        label3.setText("EDAD: " + eventos.edadMinima);
         panel.add(label3);
+
+        // precio
+        Font font4 = new Font("SansSerif", Font.PLAIN, 14);
+        JLabel label4 = new JLabel();
+        label4.setFont(font4);
+        label4.setForeground(Color.LIGHT_GRAY);
+        label4.setText("PRECIO:"+eventos.precioMedio);
+        panel.add(label4);
+
+        // musica
+        Font font5 = new Font("SansSerif", Font.PLAIN, 14);
+        JLabel label5 = new JLabel();
+        label5.setFont(font5);
+        label5.setForeground(Color.LIGHT_GRAY);
+        label5.setText("Tipo de música: " + eventos.tipoMusica);
+        panel.add(label5);
 
         return panel;
     }
 }
-

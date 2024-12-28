@@ -1,19 +1,27 @@
 package ui;
 
-import FileReader.Constantes;
-import FileReader.Reader;
+import Client.Client;
 import modelo.Eventos;
+import modelo.Usuario;
+import ui.BotonEvento;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Menu extends JPanel {
     private ArrayList<Eventos> eventos = new ArrayList<Eventos>();
     private JPanel panelDeBotones;
+    private JFrame ventana;
+    private Usuario user;
 
-    public Menu() {
+    public Menu(Usuario user) {
         this.setLayout(new BorderLayout());
+        this.user=user;
+
 
         // Creamos un panel para los botones y lo añadimos al JScrollPane
         panelDeBotones = new JPanel();
@@ -25,31 +33,45 @@ public class Menu extends JPanel {
 
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         // Agregamos los eventos
-        start();
+        obtenerEventos();
 
         // Añadimos el JScrollPane al panel principal
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void start() {
-        Reader.leerOpciones();
-        for (int i = 0; i < Constantes.NUMERO_DE_EVENTOS; i++) {
-            Eventos e = new Eventos(Constantes.NOMBRES.get(i), Constantes.FECHAS.get(i), Constantes.EDADES.get(i));
-            System.out.println(Constantes.NOMBRES.get(i));
-            eventos.add(e);
-        }
-        init(panelDeBotones);
-
+    public JFrame getVentana() {
+        return ventana;
     }
+
+    public void setVentana(JFrame ventana) {
+        this.ventana = ventana;
+    }
+
+    public void obtenerEventos() {
+        Client cliente = new Client(); //aqui no estas instanciando ningun host o port
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/obtenerEventos";
+        session = cliente.sentMessage(context, session);
+        eventos= (ArrayList<Eventos>) session.get("obtenidos");
+        init(panelDeBotones);
+    }
+
+
 
 
     public void init(JPanel panelDeBotones) {
         for (Eventos evento : eventos) {
             BotonEvento botonEvento = new BotonEvento(evento);
+            botonEvento.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new Ventana(user, new EventDetailsWindow(evento, user));
+                    ventana.dispose();
+                }
+            });
 
             botonEvento.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));  // Ancho máximo y altura fija de 100px
             botonEvento.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 
             panelDeBotones.add(botonEvento);
             panelDeBotones.add(Box.createRigidArea(new Dimension(0, 10)));

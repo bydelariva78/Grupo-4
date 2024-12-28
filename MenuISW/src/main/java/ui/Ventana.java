@@ -1,17 +1,21 @@
 package ui;
 
-import FileReader.Constantes;
+
 
 import javax.swing.*;
 import java.awt.*;
+import modelo.Usuario;
 
 public class Ventana extends JFrame {
     private PanelNorth north;
-    private ui.Menu center;
+    private JPanel center;
+    private Usuario user;
+    private JPanel panel;
 
-    public Ventana()
+    public Ventana(Usuario user, JPanel panel)
     {
-
+        this.user=user;
+        this.panel=panel;
         init();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -20,21 +24,22 @@ public class Ventana extends JFrame {
         setLayout(new BorderLayout());
         this.add(north, BorderLayout.NORTH);
         this.add(center, BorderLayout.CENTER);
-        System.out.println(Constantes.NOMBRES.get(1));
+
 
 
     }
+    public Ventana(){
 
-    public void restart()
-    {
-        center.start();
     }
 
     public void init()
     {
-        north=new PanelNorth(this);
-        center=new Menu();
-
+        north=new PanelNorth(this,user);
+        center=panel;
+        if (panel instanceof Menu)
+        {
+            ((Menu) panel).setVentana(this);
+        }
     }
 
     public static void main (String[] args)
@@ -43,4 +48,7 @@ public class Ventana extends JFrame {
 
     }
 
+    public Usuario getUser() {
+        return user;
+    }
 }
