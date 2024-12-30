@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import database.DatabaseOperations;
+import modelo.Eventos;
 import modelo.Usuario;
 
 import javax.xml.crypto.Data;
@@ -36,6 +37,10 @@ public class UsuarioController {
 
     public HashMap<String,Object> obtenerEventos(){
         HashMap<String,Object> res = DatabaseOperations.obtainEvents();
+        return (res);
+    }
+    public HashMap<String,Object> modificarEvento(Eventos evento) {
+        HashMap<String, Object> res = DatabaseOperations.modEvent(evento);
         return (res);
     }
 }

@@ -157,7 +157,7 @@ public class DatabaseOperations {
             // Si hay un resultado, las credenciales son correctas
             if (rs.next()) {
                 System.out.println("Inicio de sesión de discoteca exitoso");
-                res.put("usuario",new Usuario(nombre,contrasena));
+                res.put("evento",new Eventos(nombre,rs.getString("tipomusica"),rs.getString("diasapertura"),rs.getString("edadminima"),rs.getString("preciomedio"),rs.getString(("descripcion"))));
                 res.put("encontrado",true);
                 return res;
             } else {
@@ -300,6 +300,35 @@ public class DatabaseOperations {
             System.out.println("Error al buscar nombre: " + e.getMessage());
             nombreExistente = false;
             return nombreExistente;
+        }
+    }
+
+    public static HashMap<String, Object> modEvent(Eventos evento){
+        String descripcion= evento.descripcion;
+        String nuevaEdadMinima = evento.edadMinima;
+        String nuevoPrecioMedio= evento.precioMedio;
+        String nuevoDiasApertura= evento.diasApertura;
+        String nuevoTipoMusica =evento.tipoMusica;
+        String SQL = "UPDATE eventos SET descripcion = ?, tipomusica = ?, edadminima = ?, preciomedio = ?, diasapertura = ? WHERE nombre = ?";
+        HashMap<String,Object> res = new HashMap<>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, descripcion);
+            pstmt.setString(2, nuevoTipoMusica);
+            pstmt.setString(3, nuevaEdadMinima);
+            pstmt.setString(4, nuevoPrecioMedio);
+            pstmt.setString(5, nuevoDiasApertura);
+            pstmt.setString(6, evento.nombre);
+
+            res.put("modificado", true);
+            return res;
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            res.put("modificado", false);
+            return res;
         }
     }
 

@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import Client.Client;
+import modelo.Eventos;
 import modelo.Usuario;
 
 public class InicioSesion extends JFrame {
@@ -224,10 +225,10 @@ public class InicioSesion extends JFrame {
         session.put("contrasena", contrasena.toString());
         session = cliente.sentMessage(context, session);
         if (session.get("encontrado").equals(true)) {
-            Usuario user = (Usuario) session.get("usuario");
-            new Ventana(user);
+            Eventos evento = (Eventos) session.get("evento");
+            new Menu_Evento(evento);
             dispose();
-            return ("Bienvenido " + user.getNombre());
+            return ("Bienvenido " + evento.nombre);
         } else {
             return ("Usuario o contraseña incorrectos");
         }

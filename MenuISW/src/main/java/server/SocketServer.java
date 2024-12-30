@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import Properties.PropertiesISW;
 import controlador.UsuarioController;
+import modelo.Eventos;
 import modelo.Usuario;
 import message.Message;
 
@@ -98,6 +99,14 @@ public class SocketServer extends Thread {
                 case "/obtenerEventos":
                     customerControler = new UsuarioController();
                     res = customerControler.obtenerEventos();
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/modificarEvento":
+                    Eventos evento= (Eventos) session.get("evento");
+                    customerControler=new UsuarioController();
+                    res =customerControler.modificarEvento(evento);
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
