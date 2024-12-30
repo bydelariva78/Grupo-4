@@ -194,7 +194,7 @@ public class Menu_Evento extends JFrame {
             if (session.get("modificado").equals(true)){
                 System.out.println("modificado");
             }
-            else{ System.out.println("modificado");}
+            else{ System.out.println("no");}
         });
         confirmButtonPanel.add(confirmarButton);
 

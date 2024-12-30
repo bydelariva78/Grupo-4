@@ -104,6 +104,7 @@ public class SocketServer extends Thread {
                     objectOutputStream.writeObject(mensajeOut);
                     break;
                 case "/modificarEvento":
+                    System.out.println(socket);
                     Eventos evento= (Eventos) session.get("evento");
                     customerControler=new UsuarioController();
                     res =customerControler.modificarEvento(evento);

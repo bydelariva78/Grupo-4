@@ -309,6 +309,7 @@ public class DatabaseOperations {
         String nuevoPrecioMedio= evento.precioMedio;
         String nuevoDiasApertura= evento.diasApertura;
         String nuevoTipoMusica =evento.tipoMusica;
+        System.out.println(nuevaEdadMinima);
         String SQL = "UPDATE eventos SET descripcion = ?, tipomusica = ?, edadminima = ?, preciomedio = ?, diasapertura = ? WHERE nombre = ?";
         HashMap<String,Object> res = new HashMap<>();
         try (Connection conn = DatabaseConnection.connect();
@@ -320,8 +321,13 @@ public class DatabaseOperations {
             pstmt.setString(4, nuevoPrecioMedio);
             pstmt.setString(5, nuevoDiasApertura);
             pstmt.setString(6, evento.nombre);
+            int filasAfectadas = pstmt.executeUpdate();
 
-            res.put("modificado", true);
+            if (filasAfectadas > 0) {
+                res.put("modificado", true);  // Si hay filas afectadas, se considera que la actualización fue exitosa
+            } else {
+                res.put("modificado", false);  // Si no hay filas afectadas, la actualización no tuvo efecto
+            }
             return res;
 
 
