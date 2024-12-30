@@ -28,7 +28,7 @@ public class EventosDAOTest {
 
     @Test
     public void testGetEventoById() {
-        Eventos expectedEvento = new Eventos("Banloo", "Reguetón", "Martes","15", "25");
+        Eventos expectedEvento = new Eventos("Banloo", "Reguetón", "Martes","15", "25", "Una discoteca muy divertida");
 
         // Simular el comportamiento del método getCliente
         when(EventosDAO.getEvento("Banloo")).thenReturn(expectedEvento);

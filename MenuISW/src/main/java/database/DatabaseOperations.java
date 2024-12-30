@@ -11,8 +11,324 @@ import java.util.List;
 
 public class DatabaseOperations {
 
+    public static HashMap<String, Object> addPoints(String nombre, Integer puntos)
+    {
+        String SQL="SELECT puntos FROM usuarios WHERE nombre = ?";
+        HashMap<String,Object> res = new HashMap<>();
+        try(Connection conn= DatabaseConnection.connect();
+        PreparedStatement pstmt = conn.prepareStatement(SQL))
+        {
+            pstmt.setString(1,nombre);
+
+            ResultSet rs= pstmt.executeQuery();
+            if (rs.next())
+            {
+                Integer points= rs.getInt("puntos");
+                Integer total= points+puntos;
+                savePuntos(nombre,total);
+                res.put("result",true);
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    public static HashMap<String,Object> savePuntos(String nombre, Integer puntos)
+    {
+        String SQL = "UPDATE usuarios SET puntos = ? WHERE nombre = ?";
+        HashMap<String, Object> res = new HashMap<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Establecer los valores para los parámetros
+            pstmt.setInt(1, puntos); // Actualiza la columna "puntos"
+            pstmt.setString(2, nombre); // Filtra por el nombre del usuario
+
+            // Ejecutar la actualización
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                res.put("success", true);
+                res.put("message", "Puntos actualizados correctamente para el usuario: " + nombre);
+            } else {
+                res.put("success", false);
+                res.put("message", "No se encontró el usuario especificado.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            res.put("success", false);
+            res.put("message", "Error al actualizar puntos: " + e.getMessage());
+        }
+
+        return res;
+
+    }
+    public static HashMap<String,Object> insertAsistente(Boolean make, String nombre, String evento)
+    {
+        String SQL = "SELECT asistentes FROM  eventos WHERE nombre = ?";
+        ArrayList<String> result = new ArrayList<>();
+        HashMap<String,Object> res = new HashMap<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Establecer el valor de la condición
+            pstmt.setString(1, evento);
+
+            // Ejecutar la consulta
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // Obtener el array de texto (text[])
+                Array sqlArray = rs.getArray("asistentes");
+                if (sqlArray != null) {
+                    // Convertir el array de SQL a un array de Java
+                    String[] textArray = (String[]) sqlArray.getArray();
+                    // Convertirlo a una lista
+                    for (String text : textArray) {
+                        result.add(text);
+                    }
+                }
+            }
+            if (make)
+            {
+                result.remove(nombre);
+            }else{
+                result.add(nombre);
+            }
+
+            saveAsistentes(evento, result);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        res.put("asistentes", result);
+
+        return res;
+
+    }
+    public static HashMap<String,Object> saveAsistentes(String nombre, ArrayList<String> eventos)
+    {
+        HashMap<String, Object> res = new HashMap<>();
+        String SQL = "UPDATE eventos SET asistentes = ? WHERE nombre = ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Convertir ArrayList<String> a Array de Java
+            String[] eventosArray = eventos.toArray(new String[0]);
+
+            // Establecer los parámetros de la consulta
+            pstmt.setArray(1, conn.createArrayOf("text", eventosArray));
+            pstmt.setString(2, nombre);
+
+            // Ejecutar la actualización
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                res.put("success", true);
+                res.put("message", "Lista de asistentes actualizada correctamente.");
+            } else {
+                res.put("success", false);
+                res.put("message", "No se encontró el evento especificado.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            res.put("success", false);
+            res.put("message", "Error al actualizar eventos favoritos: " + e.getMessage());
+        }
+        return res;
+    }
+
+    public static HashMap<String,Object> checkAssist(String nombre, String evento)
+    {
+        String SQL = "SELECT asistentes FROM  eventos WHERE nombre = ?";
+
+        ArrayList<String> result = new ArrayList<>();
+        HashMap<String,Object> res = new HashMap<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Establecer el valor de la condición
+            pstmt.setString(1, evento);
+
+            // Ejecutar la consulta
+            ResultSet rs = pstmt.executeQuery();
+            Boolean r;
+
+            if (rs.next()) {
+                // Obtener el array de texto (text[])
+                Array sqlArray = rs.getArray("asistentes");
+                if (sqlArray != null) {
+                    // Convertir el array de SQL a un array de Java
+                    String[] textArray = (String[]) sqlArray.getArray();
+                    // Convertirlo a una lista
+                    for (String text : textArray) {
+                        result.add(text);
+                    }
+                    if(result.contains(nombre))
+                        r=true;
+                    else
+                    {
+                        r=false;
+                    }
+
+                }else {
+                    r=false;
+                }
+            }else{
+                r=false;
+            }
+            res.put("result",r);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return  res;
+    }
+
+    public static HashMap<String,Object> checkFav(String nombre, String evento)
+    {
+        String SQL = "SELECT eventos_favoritos FROM  usuarios WHERE nombre = ?";
+
+        ArrayList<String> result = new ArrayList<>();
+        HashMap<String,Object> res = new HashMap<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Establecer el valor de la condición
+            pstmt.setString(1, nombre);
+
+            // Ejecutar la consulta
+            ResultSet rs = pstmt.executeQuery();
+            Boolean r;
+
+            if (rs.next()) {
+                // Obtener el array de texto (text[])
+                Array sqlArray = rs.getArray("eventos_favoritos");
+                if (sqlArray != null) {
+                    // Convertir el array de SQL a un array de Java
+                    String[] textArray = (String[]) sqlArray.getArray();
+                    // Convertirlo a una lista
+                    for (String text : textArray) {
+                        result.add(text);
+                    }
+                    if(result.contains(evento))
+                        r=true;
+                    else
+                    {
+                        r=false;
+                    }
+
+                }else {
+                    r=false;
+                }
+            }else{
+                r=false;
+            }
+            res.put("result",r);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return  res;
+    }
+
+
+    public static HashMap<String,Object> makeFav(Boolean make, String nombre, String evento)
+    {
+        String SQL = "SELECT eventos_favoritos FROM  usuarios WHERE nombre = ?";
+        ArrayList<String> result = new ArrayList<>();
+        HashMap<String,Object> res = new HashMap<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Establecer el valor de la condición
+            pstmt.setString(1, nombre);
+
+            // Ejecutar la consulta
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // Obtener el array de texto (text[])
+                Array sqlArray = rs.getArray("eventos_favoritos");
+                if (sqlArray != null) {
+                    // Convertir el array de SQL a un array de Java
+                    String[] textArray = (String[]) sqlArray.getArray();
+                    // Convertirlo a una lista
+                    for (String text : textArray) {
+                        result.add(text);
+                    }
+                }
+            }
+            if (make)
+            {
+                result.remove(evento);
+            }else{
+                result.add(evento);
+            }
+
+            saveFavoritos(nombre, result);
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        res.put("favoritos", result);
+
+        return res;
+    }
+
+    public static HashMap<String,Object> saveFavoritos(String nombre, ArrayList<String> eventos)
+    {
+        HashMap<String, Object> res = new HashMap<>();
+        String SQL = "UPDATE usuarios SET eventos_favoritos = ? WHERE nombre = ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            // Convertir ArrayList<String> a Array de Java
+            String[] eventosArray = eventos.toArray(new String[0]);
+
+            // Establecer los parámetros de la consulta
+            pstmt.setArray(1, conn.createArrayOf("text", eventosArray));
+            pstmt.setString(2, nombre);
+
+            // Ejecutar la actualización
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                res.put("success", true);
+                res.put("message", "Lista de eventos favoritos actualizada correctamente.");
+            } else {
+                res.put("success", false);
+                res.put("message", "No se encontró el usuario especificado.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            res.put("success", false);
+            res.put("message", "Error al actualizar eventos favoritos: " + e.getMessage());
+        }
+
+        return res;
+    }
+
     // Método para registrar un nuevo usuario
     //Habria que añadir que no pueden existir dos usuario con el mismo nombre
+
+
     public static HashMap<String,Object> insertUser(String nombre, String contrasena) {
         String SQL = "INSERT INTO usuarios(nombre, contrasenya, puntos) VALUES(?, ?, ?)";
         HashMap<String,Object> res = new HashMap<>();

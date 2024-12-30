@@ -50,7 +50,9 @@ public class SocketServer extends Thread {
             String comentario;
             String nombre;
             String contrasena;
+            Integer puntos;
             Comentario comment;
+            Boolean make;
             HashMap<String, Object> res;
             switch (mensajeIn.getContext()) {
                 case "/inicioSesion":
@@ -103,6 +105,53 @@ public class SocketServer extends Thread {
                 case "/obtenerEventos":
                     customerControler = new UsuarioController();
                     res = customerControler.obtenerEventos();
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/makeFavorito":
+                    make=(Boolean) session.get("make");
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.makeFavorito(make,nombre,evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/addPuntos":
+                    puntos=(Integer) session.get("puntos");
+                    nombre=(String) session.get("usuario");
+                    customerControler = new UsuarioController();
+                    res = customerControler.addPuntos(nombre,puntos);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/Asistir":
+                    make=(Boolean) session.get("make");
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.Asistir(make,nombre,evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/checkFavorito":
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.checkFavorito(nombre,evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/checkAssist":
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.checkAsistencia(nombre,evento);
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
