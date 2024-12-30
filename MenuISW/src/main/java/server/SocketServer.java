@@ -50,6 +50,7 @@ public class SocketServer extends Thread {
             String comentario;
             String nombre;
             String contrasena;
+            Integer puntos;
             Comentario comment;
             Boolean make;
             HashMap<String, Object> res;
@@ -118,6 +119,25 @@ public class SocketServer extends Thread {
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
                     break;
+                case "/addPuntos":
+                    puntos=(Integer) session.get("puntos");
+                    nombre=(String) session.get("usuario");
+                    customerControler = new UsuarioController();
+                    res = customerControler.addPuntos(nombre,puntos);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/Asistir":
+                    make=(Boolean) session.get("make");
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.Asistir(make,nombre,evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
                 case "/checkFavorito":
                     nombre=(String) session.get("usuario");
                     evento=(String) session.get("evento");
@@ -126,7 +146,16 @@ public class SocketServer extends Thread {
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
-
+                    break;
+                case "/checkAssist":
+                    nombre=(String) session.get("usuario");
+                    evento=(String) session.get("evento");
+                    customerControler = new UsuarioController();
+                    res = customerControler.checkAsistencia(nombre,evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
                 case "/guardarComentario":
                     comment=(Comentario) session.get("comentario");
                     customerControler = new UsuarioController();

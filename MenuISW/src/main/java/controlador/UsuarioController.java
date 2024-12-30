@@ -1,22 +1,38 @@
 package controlador;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import database.DatabaseOperations;
 import modelo.Comentario;
-import modelo.Usuario;
-
-import javax.xml.crypto.Data;
 
 public class UsuarioController {
 
-    public HashMap<String,Object> checkFavorito( String nombre, String evento)
+    public HashMap<String,Object> checkFavorito(String nombre, String evento)
     {
         HashMap<String,Object> res= DatabaseOperations.checkFav(nombre,evento);
         return  res;
 
     }
+
+    public HashMap<String,Object> addPuntos(String nombre, Integer puntos)
+    {
+        HashMap<String, Object> res = DatabaseOperations.addPoints(nombre,puntos);
+        return res;
+    }
+
+    public HashMap<String,Object> Asistir(Boolean make, String nombre, String evento)
+    {
+        HashMap<String,Object> res= DatabaseOperations.insertAsistente(make,nombre,evento);
+        return  res;
+    }
+
+    public HashMap<String,Object> checkAsistencia( String nombre, String evento)
+    {
+        HashMap<String,Object> res= DatabaseOperations.checkAssist(nombre,evento);
+        return  res;
+
+    }
+
 
     public HashMap<String,Object> makeFavorito(Boolean make, String nombre, String evento)
     {

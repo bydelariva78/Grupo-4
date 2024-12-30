@@ -16,6 +16,7 @@ public class EventDetailsWindow extends JPanel {
 
     private JTextArea commentArea;
     private JButton favButton;
+    private JButton assistButton;
 
     private Usuario user;
     private Eventos event;
@@ -26,8 +27,14 @@ public class EventDetailsWindow extends JPanel {
     private String precio;
     private String musica;
     private String dia;
+
+
     private final String fav= "Quitar de favoritos";
     private final String notfav= "Hacer favorito";
+    private final String asist="Asistir al evento";
+    private final String no_asist="Cancelar asistencia";
+
+
 
 
     private DefaultListModel<String> commentListModel;
@@ -124,9 +131,11 @@ public class EventDetailsWindow extends JPanel {
                 {
                     makeFavorito(true);
                     favButton.setLabel(notfav);
+                    addPuntos(-100);
                 } else if (favButton.getLabel()==notfav){
                     makeFavorito(false);
                     favButton.setLabel(fav);
+                    addPuntos(100);
                 }
             }
         });
@@ -136,10 +145,25 @@ public class EventDetailsWindow extends JPanel {
         favButton.setFocusPainted(false);
         favButton.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton attendButton = new JButton("Voy a asistir");
-        attendButton.setBackground(new Color(34, 139, 34));
-        attendButton.setForeground(Color.WHITE);
-        attendButton.setFont(new Font("Arial", Font.BOLD, 16));
+        JButton assistButton = getAssistButton();
+        assistButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (assistButton.getLabel()==asist)
+                {
+                    Asistir(false);
+                    assistButton.setLabel(no_asist);
+                    addPuntos(500);
+                }else {
+                    Asistir(true);
+                    assistButton.setLabel(asist);
+                    addPuntos(-500);
+                }
+            }
+        });
+        assistButton.setBackground(new Color(34, 139, 34));
+        assistButton.setForeground(Color.WHITE);
+        assistButton.setFont(new Font("Arial", Font.BOLD, 16));
 
         JLabel commentLabel = new JLabel("Tu comentario:", SwingConstants.LEFT);
         commentLabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -182,7 +206,6 @@ public class EventDetailsWindow extends JPanel {
             String newComment = commentArea.getText().trim();
             if (!newComment.isEmpty()) {
                 guardarComent();
-                System.out.println("funciona");
                 user.setPuntos(user.getPuntos()+5);
                 commentArea.setText("");
                 actualizarCommentListModel();
@@ -190,7 +213,7 @@ public class EventDetailsWindow extends JPanel {
         });
 
         actionPanel.add(favButton);
-        actionPanel.add(attendButton);
+        actionPanel.add(assistButton);
         actionPanel.add(commentLabel);
         actionPanel.add(commentPanel);
 
@@ -210,6 +233,63 @@ public class EventDetailsWindow extends JPanel {
             button.setLabel(notfav);
         }
         return button;
+    }
+
+
+    private JButton getAssistButton()
+    {
+        JButton button;
+        if (checkAssist()){
+            button=new JButton();
+            button.setLabel(no_asist);
+        }
+        else{
+            button=new JButton();
+            button.setLabel(asist);
+        }
+        return button;
+    }
+
+    public void addPuntos(Integer points)
+    {
+        Client cliente = new Client();
+        HashMap<String,Object> session = new HashMap<>();
+        String context="/addPuntos";
+        session.put("usuario",user.getNombre());
+        session.put("puntos",points);
+        try{
+            session = cliente.sentMessage(context, session);
+            if (session.containsKey("error")) {
+                System.out.println("Error al actualizar puntos: " + session.get("error"));
+            } else {
+                System.out.println("Éxito");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar puntos: " + e.getMessage());
+        }
+
+    }
+
+    public boolean checkAssist()
+    {
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/checkAssist";
+        session.put("evento",event.getNombre());
+        session.put("usuario",user.getNombre());
+        try {
+            session = cliente.sentMessage(context, session);
+            if (session.containsKey("error")) {
+                System.out.println("Error al checkear asistencia: " + session.get("error"));
+            } else {
+                System.out.println("Éxito");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al cehckear asistencia: " + e.getMessage());
+        }
+
+        Boolean res=(Boolean) session.get("result");
+        return res;
     }
 
     private JLabel createDetailLabel(String text) {
@@ -303,6 +383,27 @@ public class EventDetailsWindow extends JPanel {
             }
         } catch (Exception e) {
             System.out.println("Error al marcar fav: " + e.getMessage());
+        }
+
+    }
+
+    public void Asistir(Boolean b)
+    {
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/Asistir";
+        session.put("make",b);
+        session.put("evento",event.getNombre());
+        session.put("usuario",user.getNombre());
+        try {
+            session = cliente.sentMessage(context, session);
+            if (session.containsKey("error")) {
+                System.out.println("Error al declarar asistencia: " + session.get("error"));
+            } else {
+                System.out.println("Éxito");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al declarar asistencia: " + e.getMessage());
         }
 
     }
