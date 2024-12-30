@@ -141,11 +141,6 @@ public class Menu_Evento extends JFrame {
             comentariosPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         }
 
-        ArrayList<String[]> valoraciones = new ArrayList<>();
-        valoraciones.add(new String[]{"Usuario1", "Valoración de ejemplo 1"});
-        valoraciones.add(new String[]{"Usuario2", "Valoración de ejemplo 2"});
-        valoraciones.add(new String[]{"Usuario3", "Valoración de ejemplo 3"});
-
         ArrayList<String> asistentes = obtenerAsistentes(this.evento);
         for (String asistente : asistentes) {
             JPanel asistentePanel = new JPanel();
