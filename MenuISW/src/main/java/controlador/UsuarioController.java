@@ -43,4 +43,13 @@ public class UsuarioController {
         HashMap<String, Object> res = DatabaseOperations.modEvent(evento);
         return (res);
     }
+    public HashMap<String,Object> obtenerComentariosEvento(Eventos evento) {
+        HashMap<String, Object> res = DatabaseOperations.obtainComentsEvent(evento);
+        return (res);
+    }
+    public HashMap<String,Object> obtenerAsistentesEvento(Eventos evento) {
+        HashMap<String, Object> res = DatabaseOperations.obtainAsistantsEvent(evento);
+        return (res);
+    }
+
 }

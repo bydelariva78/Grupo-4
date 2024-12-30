@@ -108,23 +108,18 @@ public class Menu_Evento extends JFrame {
         comentariosScrollPane.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.GRAY), "Comentarios", 0, 0, fontSubtitulo, textColor));
 
-        JPanel valoracionesPanel = new JPanel();
-        valoracionesPanel.setLayout(new BoxLayout(valoracionesPanel, BoxLayout.Y_AXIS));
-        valoracionesPanel.setBackground(backgroundColor);
+        JPanel asistentesPanel = new JPanel();
+        asistentesPanel.setLayout(new BoxLayout(asistentesPanel, BoxLayout.Y_AXIS));
+        asistentesPanel.setBackground(backgroundColor);
 
-        JScrollPane valoracionesScrollPane = new JScrollPane(valoracionesPanel);
-        valoracionesScrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GRAY), "Valoraciones", 0, 0, fontSubtitulo, textColor));
+        JScrollPane asistentesScrollPane = new JScrollPane(asistentesPanel);
+        asistentesScrollPane.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.GRAY), "Asitentes", 0, 0, fontSubtitulo, textColor));
 
         comentariosValoracionesPanel.add(comentariosScrollPane);
-        comentariosValoracionesPanel.add(valoracionesScrollPane);
+        comentariosValoracionesPanel.add(asistentesScrollPane);
 
-        // Llenar comentarios y valoraciones con datos de ejemplo
-        ArrayList<String[]> comentarios = new ArrayList<>();
-        comentarios.add(new String[]{"Usuario1", "Comentario de ejemplo 1"});
-        comentarios.add(new String[]{"Usuario2", "Comentario de ejemplo 2"});
-        comentarios.add(new String[]{"Usuario3", "Comentario de ejemplo 3"});
-
+        ArrayList<String[]> comentarios =obtenerComentarios(this.evento);
         for (String[] comentario : comentarios) {
             JPanel comentarioPanel = new JPanel();
             comentarioPanel.setLayout(new BorderLayout());
@@ -151,25 +146,23 @@ public class Menu_Evento extends JFrame {
         valoraciones.add(new String[]{"Usuario2", "Valoración de ejemplo 2"});
         valoraciones.add(new String[]{"Usuario3", "Valoración de ejemplo 3"});
 
-        for (String[] valoracion : valoraciones) {
-            JPanel valoracionPanel = new JPanel();
-            valoracionPanel.setLayout(new BorderLayout());
-            valoracionPanel.setBackground(new Color(30, 30, 30));
-            valoracionPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        ArrayList<String> asistentes = obtenerAsistentes(this.evento);
+        for (String asistente : asistentes) {
+            JPanel asistentePanel = new JPanel();
+            asistentePanel.setLayout(new BorderLayout());
+            asistentePanel.setBackground(new Color(30, 30, 30));
+            asistentePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 
-            JLabel usuarioLabel = new JLabel(valoracion[0]);
+            JLabel usuarioLabel = new JLabel(asistente);
             usuarioLabel.setFont(fontUsuario);
             usuarioLabel.setForeground(textColor);
 
-            JLabel valoracionLabel = new JLabel(valoracion[1]);
-            valoracionLabel.setFont(fontTexto);
-            valoracionLabel.setForeground(textColor);
 
-            valoracionPanel.add(usuarioLabel, BorderLayout.NORTH);
-            valoracionPanel.add(valoracionLabel, BorderLayout.CENTER);
 
-            valoracionesPanel.add(valoracionPanel);
-            valoracionesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+            asistentePanel.add(usuarioLabel, BorderLayout.NORTH);
+
+            asistentesPanel.add(asistentePanel);
+            asistentesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         }
 
         // Botón de confirmación
@@ -186,10 +179,10 @@ public class Menu_Evento extends JFrame {
             evento.tipoMusica = tipoMusicaField.getText();
             evento.edadMinima = edadMinimaField.getText();
             evento.precioMedio = precioMedioField.getText();
-            Client cliente = new Client(); //aqui no estas instanciando ningun host o port
+            Client cliente = new Client();
             HashMap<String, Object> session = new HashMap<>();
             String context = "/modificarEvento";
-            session.put("evento", evento); //
+            session.put("evento", evento);
             session = cliente.sentMessage(context, session);
             if (session.get("modificado").equals(true)){
                 System.out.println("modificado");
@@ -205,7 +198,24 @@ public class Menu_Evento extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
     }
-
+    private  ArrayList<String[]> obtenerComentarios(Eventos evento){
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/obtenerComentariosEvento";
+        session.put("evento", evento);
+        session = cliente.sentMessage(context, session);
+        ArrayList<String[]> comentarios = (ArrayList<String[]>) session.get("comentarios");
+        return comentarios;
+    }
+    private ArrayList<String> obtenerAsistentes(Eventos evento){
+        Client cliente = new Client();
+        HashMap<String, Object> session = new HashMap<>();
+        String context = "/obtenerAsistentesEvento";
+        session.put("evento", evento);
+        session = cliente.sentMessage(context, session);
+        ArrayList<String> asistentes = (ArrayList<String>) session.get("asistentes");
+        return asistentes;
+    }
     public static void main(String[] args) {
         new Menu_Evento(new Eventos("Evento Prueba", "Descripción de prueba", "Rock", "18", "50"));
     }

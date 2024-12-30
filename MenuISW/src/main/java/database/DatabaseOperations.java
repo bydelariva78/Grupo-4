@@ -3,10 +3,7 @@ package database;
 import modelo.Eventos;
 import modelo.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -309,7 +306,6 @@ public class DatabaseOperations {
         String nuevoPrecioMedio= evento.precioMedio;
         String nuevoDiasApertura= evento.diasApertura;
         String nuevoTipoMusica =evento.tipoMusica;
-        System.out.println(nuevaEdadMinima);
         String SQL = "UPDATE eventos SET descripcion = ?, tipomusica = ?, edadminima = ?, preciomedio = ?, diasapertura = ? WHERE nombre = ?";
         HashMap<String,Object> res = new HashMap<>();
         try (Connection conn = DatabaseConnection.connect();
@@ -334,6 +330,60 @@ public class DatabaseOperations {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             res.put("modificado", false);
+            return res;
+        }
+    }
+
+    public static HashMap<String, Object> obtainComentsEvent(Eventos evento) {
+        String SQL = "SELECT * FROM comentarios WHERE evento = ?";
+        HashMap<String, Object> res = new HashMap<>();
+        ArrayList<String[]> comentarios = new ArrayList<String[]>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, evento.nombre);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String usuario = rs.getString("usuario");
+                String comentario = rs.getString("comentario");
+                comentarios.add(new String[]{usuario,comentario});
+            }
+
+            res.put("comentarios", comentarios);
+            return res;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener eventos: " + e.getMessage());
+
+            return res;
+        }
+    }
+    public static HashMap<String, Object> obtainAsistantsEvent(Eventos evento) {
+        String SQL = "SELECT asistentes FROM eventos WHERE nombre = ?";
+        HashMap<String, Object> res = new HashMap<>();
+        ArrayList<String> asistentes = new ArrayList<String>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, evento.nombre);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                Array sqlArray = rs.getArray("asistentes"); // Obtener el array
+                if (sqlArray != null) {
+                    String[] textArray = (String[]) rs.getArray("asistentes").getArray();
+
+                    for (String texto : textArray) {
+                        asistentes.add(texto);
+                    }
+                }
+            }
+            res.put("asistentes", asistentes);
+            System.out.println("asistentes devueltos");
+            return res;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener eventos: " + e.getMessage());
+
             return res;
         }
     }

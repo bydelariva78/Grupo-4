@@ -104,10 +104,25 @@ public class SocketServer extends Thread {
                     objectOutputStream.writeObject(mensajeOut);
                     break;
                 case "/modificarEvento":
-                    System.out.println(socket);
                     Eventos evento= (Eventos) session.get("evento");
                     customerControler=new UsuarioController();
                     res =customerControler.modificarEvento(evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/obtenerComentariosEvento":
+                    evento = (Eventos) session.get("evento");
+                    customerControler=new UsuarioController();
+                    res =customerControler.obtenerComentariosEvento(evento);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/obtenerAsistentesEvento":
+                    evento = (Eventos) session.get("evento");
+                    customerControler=new UsuarioController();
+                    res =customerControler.obtenerAsistentesEvento(evento);
                     session=res;
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
