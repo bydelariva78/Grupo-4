@@ -33,25 +33,25 @@ public class MiCuentaFrame extends JFrame {
         PanelNorth panelNorth = new PanelNorth(this, user); // Usa tu clase PanelNorth
         add(panelNorth, BorderLayout.NORTH); // Agregar PanelNorth como cabecera
 
-        // Panel de eventos visitados
-        JPanel eventosVisitadosPanel = new JPanel();
-        eventosVisitadosPanel.setLayout(new BoxLayout(eventosVisitadosPanel, BoxLayout.Y_AXIS));
-        eventosVisitadosPanel.setBackground(backgroundDark);
+        // Panel de eventos favoritos
+        JPanel eventosFavoritosPanel = new JPanel();
+        eventosFavoritosPanel.setLayout(new BoxLayout(eventosFavoritosPanel, BoxLayout.Y_AXIS));
+        eventosFavoritosPanel.setBackground(backgroundDark);
 
-        JScrollPane scrollPaneVisitados = new JScrollPane(eventosVisitadosPanel);
-        scrollPaneVisitados.setBorder(BorderFactory.createTitledBorder(null, "Eventos Visitados",
+        JScrollPane scrollPaneFavoritos = new JScrollPane(eventosFavoritosPanel);
+        scrollPaneFavoritos.setBorder(BorderFactory.createTitledBorder(null, "Eventos Favoritos",
                 0, 0, new Font("Arial", Font.BOLD, 14), textColor)); // Letras en negro
-        scrollPaneVisitados.getViewport().setBackground(backgroundDark);
+        scrollPaneFavoritos.getViewport().setBackground(backgroundDark);
 
-        // Panel de eventos asistidos
-        JPanel eventosAsistidosPanel = new JPanel();
-        eventosAsistidosPanel.setLayout(new BoxLayout(eventosAsistidosPanel, BoxLayout.Y_AXIS));
-        eventosAsistidosPanel.setBackground(backgroundDark);
+        // Panel de comentarios
+        JPanel comentariosPanel = new JPanel();
+        comentariosPanel.setLayout(new BoxLayout(comentariosPanel, BoxLayout.Y_AXIS));
+        comentariosPanel.setBackground(backgroundDark);
 
-        JScrollPane scrollPaneAsistidos = new JScrollPane(eventosAsistidosPanel);
-        scrollPaneAsistidos.setBorder(BorderFactory.createTitledBorder(null, "Eventos Asistidos",
+        JScrollPane scrollPaneComentarios = new JScrollPane(comentariosPanel);
+        scrollPaneComentarios.setBorder(BorderFactory.createTitledBorder(null, "Comentarios",
                 0, 0, new Font("Arial", Font.BOLD, 14), textColor)); // Letras en negro
-        scrollPaneAsistidos.getViewport().setBackground(backgroundDark);
+        scrollPaneComentarios.getViewport().setBackground(backgroundDark);
 
         // Panel de puntos
         JPanel puntosPanel = new JPanel();
@@ -66,7 +66,7 @@ public class MiCuentaFrame extends JFrame {
         puntosPanel.add(puntosLabel, BorderLayout.CENTER);
 
         // Dividir eventos y puntos en la parte central
-        JSplitPane centralSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPaneVisitados, scrollPaneAsistidos);
+        JSplitPane centralSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPaneFavoritos, scrollPaneComentarios);
         centralSplitPane.setResizeWeight(0.5); // Balance entre paneles
         centralSplitPane.setBackground(backgroundDark);
         centralSplitPane.setDividerSize(5);
