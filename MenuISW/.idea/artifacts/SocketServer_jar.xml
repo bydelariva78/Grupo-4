@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SocketServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SocketServer_jar</output-path>
+    <root id="archive" name="VersionControl.jar">
+      <element id="module-output" name="VersionControl" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/postgresql/postgresql/42.2.5/postgresql-42.2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.15.0/byte-buddy-1.15.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
