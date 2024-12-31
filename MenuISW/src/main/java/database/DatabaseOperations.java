@@ -540,6 +540,7 @@ public class DatabaseOperations {
                 userInfo.put("nombre", rs.getString("nombre"));
                 userInfo.put("contrasenya", rs.getString("contrasenya"));
                 userInfo.put("puntos", rs.getInt("puntos"));
+                userInfo.put("eventos_favoritos", rs.getArray("eventos_favoritos"));
                 System.out.println("Usuario encontrado: " + userInfo);
             } else {
                 System.out.println("Usuario no encontrado.");

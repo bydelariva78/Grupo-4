@@ -88,4 +88,5 @@ public class MiCuentaFrame extends JFrame {
         int puntos = (int) session.get("puntos");
         return puntos;
     }
+
 }

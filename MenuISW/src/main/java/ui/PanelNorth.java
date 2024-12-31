@@ -57,6 +57,7 @@ public class PanelNorth extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 Perfil.setBackground(new Color(60, 130, 230)); // Color más oscuro al pasar el ratón
+
             }
 
             @Override
