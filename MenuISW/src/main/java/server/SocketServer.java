@@ -200,6 +200,22 @@ public class SocketServer extends Thread {
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
                     break;
+                case "/obtenerComentariosUsuario":
+                    String user = (String) session.get("usuario");
+                    customerControler=new UsuarioController();
+                    res =customerControler.obtenerComentariosUsuario(user);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/obtenerFavoritos":
+                    user = (String) session.get("usuario");
+                    customerControler=new UsuarioController();
+                    res =customerControler.obtenerFavoritos(user);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
                 default:
                     System.out.println("\nParámetro no encontrado");
                     break;

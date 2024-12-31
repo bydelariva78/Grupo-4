@@ -5,6 +5,7 @@ import java.util.HashMap;
 import database.DatabaseOperations;
 import modelo.Comentario;
 import modelo.Eventos;
+import modelo.Usuario;
 
 public class UsuarioController {
 
@@ -93,6 +94,12 @@ public class UsuarioController {
         HashMap<String, Object> res = DatabaseOperations.obtainAsistantsEvent(evento);
         return (res);
     }
-
-
+    public HashMap<String,Object> obtenerComentariosUsuario(String user) {
+        HashMap<String, Object> res = DatabaseOperations.obtainComentsUser(user);
+        return (res);
+    }
+    public HashMap<String,Object> obtenerFavoritos(String user) {
+        HashMap<String, Object> res = DatabaseOperations.obtainFavs(user);
+        return (res);
+    }
 }

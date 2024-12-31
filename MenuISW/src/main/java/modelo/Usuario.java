@@ -3,7 +3,7 @@ package modelo;
 import java.io.Serializable;
 
 public class Usuario implements Serializable {
-    String nombre;
+    public String nombre;
     String contrasenya;
     Integer puntos;
 

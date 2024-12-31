@@ -541,7 +541,6 @@ public class DatabaseOperations {
                 userInfo.put("nombre", rs.getString("nombre"));
                 userInfo.put("contrasenya", rs.getString("contrasenya"));
                 userInfo.put("puntos", rs.getInt("puntos"));
-                userInfo.put("eventos_favoritos", rs.getArray("eventos_favoritos"));
                 System.out.println("Usuario encontrado: " + userInfo);
             } else {
                 System.out.println("Usuario no encontrado.");
@@ -756,6 +755,60 @@ public class DatabaseOperations {
             return res;
         }
     }
+    public static HashMap<String, Object> obtainComentsUser(String user) {
+        String SQL = "SELECT * FROM comentarios WHERE usuario = ?";
+        HashMap<String, Object> res = new HashMap<>();
+        ArrayList<String[]> comentarios = new ArrayList<String[]>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, user);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String usuario = rs.getString("usuario");
+                String comentario = rs.getString("comentario");
+                comentarios.add(new String[]{usuario,comentario});
+            }
+
+            res.put("comentarios", comentarios);
+            return res;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener eventos: " + e.getMessage());
+
+            return res;
+        }
+    }
+    public static HashMap<String, Object> obtainFavs(String user) {
+        String SQL = "SELECT eventos_favoritos FROM usuarios WHERE nombre = ?";
+        HashMap<String, Object> res = new HashMap<>();
+        ArrayList<String> favoritos = new ArrayList<String>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, user);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                Array sqlArray = rs.getArray("eventos_favoritos"); // Obtener el array
+                if (sqlArray != null) {
+                    String[] textArray = (String[]) rs.getArray("eventos_favoritos").getArray();
+
+                    for (String texto : textArray) {
+                        favoritos.add(texto);
+                    }
+                }
+            }
+            res.put("favoritos", favoritos);
+            System.out.println("favoritos devueltos");
+            return res;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener favoritos: " + e.getMessage());
+
+            return res;
+        }
+    }
+
 
     public static void main(String[] args) {
         try (Connection conn = DatabaseConnection.connect()) {
