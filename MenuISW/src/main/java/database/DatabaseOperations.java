@@ -474,7 +474,7 @@ public class DatabaseOperations {
             // Si hay un resultado, las credenciales son correctas
             if (rs.next()) {
                 System.out.println("Inicio de sesión de discoteca exitoso");
-                res.put("usuario",new Usuario(nombre,contrasena));
+                res.put("evento",new Eventos(nombre,rs.getString("tipomusica"),rs.getString("diasapertura"),rs.getString("edadminima"),rs.getString("preciomedio"),rs.getString(("descripcion"))));
                 res.put("encontrado",true);
                 return res;
             } else {
@@ -489,6 +489,7 @@ public class DatabaseOperations {
             return res;
         }
     }
+
     public static HashMap<String,Object> insertDisco(HashMap<String,Object> datos){
         String SQL = "INSERT INTO eventos(nombre, contrasenya, edadminima, tipomusica, diasapertura, preciomedio) VALUES(?, ?, ?, ?, ?, ?)";
         HashMap<String,Object> res = new HashMap<>();
@@ -666,6 +667,93 @@ public class DatabaseOperations {
             System.out.println("Error al buscar nombre: " + e.getMessage());
             nombreExistente = false;
             return nombreExistente;
+        }
+    }
+    public static HashMap<String, Object> modEvent(Eventos evento){
+        String descripcion= evento.descripcion;
+        String nuevaEdadMinima = evento.edadMinima;
+        String nuevoPrecioMedio= evento.precioMedio;
+        String nuevoDiasApertura= evento.diasApertura;
+        String nuevoTipoMusica =evento.tipoMusica;
+        String SQL = "UPDATE eventos SET descripcion = ?, tipomusica = ?, edadminima = ?, preciomedio = ?, diasapertura = ? WHERE nombre = ?";
+        HashMap<String,Object> res = new HashMap<>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, descripcion);
+            pstmt.setString(2, nuevoTipoMusica);
+            pstmt.setString(3, nuevaEdadMinima);
+            pstmt.setString(4, nuevoPrecioMedio);
+            pstmt.setString(5, nuevoDiasApertura);
+            pstmt.setString(6, evento.nombre);
+            int filasAfectadas = pstmt.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                res.put("modificado", true);  // Si hay filas afectadas, se considera que la actualización fue exitosa
+            } else {
+                res.put("modificado", false);  // Si no hay filas afectadas, la actualización no tuvo efecto
+            }
+            return res;
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            res.put("modificado", false);
+            return res;
+        }
+    }
+
+    public static HashMap<String, Object> obtainComentsEvent(Eventos evento) {
+        String SQL = "SELECT * FROM comentarios WHERE evento = ?";
+        HashMap<String, Object> res = new HashMap<>();
+        ArrayList<String[]> comentarios = new ArrayList<String[]>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, evento.nombre);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String usuario = rs.getString("usuario");
+                String comentario = rs.getString("comentario");
+                comentarios.add(new String[]{usuario,comentario});
+            }
+
+            res.put("comentarios", comentarios);
+            return res;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener eventos: " + e.getMessage());
+
+            return res;
+        }
+    }
+    public static HashMap<String, Object> obtainAsistantsEvent(Eventos evento) {
+        String SQL = "SELECT asistentes FROM eventos WHERE nombre = ?";
+        HashMap<String, Object> res = new HashMap<>();
+        ArrayList<String> asistentes = new ArrayList<String>();
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, evento.nombre);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                Array sqlArray = rs.getArray("asistentes"); // Obtener el array
+                if (sqlArray != null) {
+                    String[] textArray = (String[]) rs.getArray("asistentes").getArray();
+
+                    for (String texto : textArray) {
+                        asistentes.add(texto);
+                    }
+                }
+            }
+            res.put("asistentes", asistentes);
+            System.out.println("asistentes devueltos");
+            return res;
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener eventos: " + e.getMessage());
+
+            return res;
         }
     }
 

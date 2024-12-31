@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import database.DatabaseOperations;
 import modelo.Comentario;
+import modelo.Eventos;
 
 public class UsuarioController {
 
@@ -80,7 +81,18 @@ public class UsuarioController {
         HashMap<String,Object> res = DatabaseOperations.getComments(eventoNombre);
         return (res);
     }
-
+    public HashMap<String,Object> modificarEvento(Eventos evento) {
+        HashMap<String, Object> res = DatabaseOperations.modEvent(evento);
+        return (res);
+    }
+    public HashMap<String,Object> obtenerComentariosEvento(Eventos evento) {
+        HashMap<String, Object> res = DatabaseOperations.obtainComentsEvent(evento);
+        return (res);
+    }
+    public HashMap<String,Object> obtenerAsistentesEvento(Eventos evento) {
+        HashMap<String, Object> res = DatabaseOperations.obtainAsistantsEvent(evento);
+        return (res);
+    }
 
 
 }

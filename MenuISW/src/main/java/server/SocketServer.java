@@ -176,6 +176,30 @@ public class SocketServer extends Thread {
                     mensajeOut.setSession(session);
                     objectOutputStream.writeObject(mensajeOut);
                     break;
+                case "/modificarEvento":
+                    Eventos evento1= (Eventos) session.get("evento");
+                    customerControler=new UsuarioController();
+                    res =customerControler.modificarEvento(evento1);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/obtenerComentariosEvento":
+                    evento1 = (Eventos) session.get("evento");
+                    customerControler=new UsuarioController();
+                    res =customerControler.obtenerComentariosEvento(evento1);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
+                case "/obtenerAsistentesEvento":
+                    evento1 = (Eventos) session.get("evento");
+                    customerControler=new UsuarioController();
+                    res =customerControler.obtenerAsistentesEvento(evento1);
+                    session=res;
+                    mensajeOut.setSession(session);
+                    objectOutputStream.writeObject(mensajeOut);
+                    break;
                 default:
                     System.out.println("\nParámetro no encontrado");
                     break;
