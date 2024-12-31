@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 public class PanelNorth extends JPanel {
     public JButton Perfil;
     public JButton Discos;
+    public JButton CerrarSesion;
     public static Boolean start_discotecas = false;
     public static Boolean start_perfil = false;
     private JFrame ventana;
@@ -32,11 +33,12 @@ public class PanelNorth extends JPanel {
         nombreUsuario.setForeground(Color.BLACK);
         this.add(nombreUsuario, BorderLayout.CENTER);
 
-        // Panel para los botones (Perfil y Discotecas)
-        JPanel botonesPanel = new JPanel(new GridLayout(1, 2, 10, 0)); // Organiza botones en dos columnas
+        // Panel para los botones (Perfil, Discotecas y Cerrar Sesión)
+        JPanel botonesPanel = new JPanel(new GridLayout(1, 3, 10, 0)); // Organiza botones en tres columnas
         botonesPanel.setBackground(new Color(240, 240, 240)); // Fondo del panel de botones
         botonesPanel.add(Perfil);
         botonesPanel.add(Discos);
+        botonesPanel.add(CerrarSesion);
 
         this.add(botonesPanel, BorderLayout.SOUTH); // Colocar los botones en la parte inferior del panel
     }
@@ -103,5 +105,36 @@ public class PanelNorth extends JPanel {
                 new Ventana(user, new Menu(user));
             }
         });
+
+        // Configuración del botón "CERRAR SESIÓN"
+        CerrarSesion = new JButton("CERRAR SESIÓN");
+        CerrarSesion.setPreferredSize(new Dimension(200, 50));
+        CerrarSesion.setFont(new Font("SansSerif", Font.BOLD, 16));
+        CerrarSesion.setBackground(new Color(100, 100, 255)); // Color de fondo púrpura claro
+        CerrarSesion.setForeground(Color.WHITE); // Texto blanco
+        CerrarSesion.setFocusPainted(false);
+        CerrarSesion.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        CerrarSesion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        CerrarSesion.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                CerrarSesion.setBackground(new Color(80, 80, 230)); // Color más oscuro al pasar el ratón
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                CerrarSesion.setBackground(new Color(100, 100, 255)); // Color original al salir
+            }
+        });
+
+        CerrarSesion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ventana.dispose();
+                new InicioSesion(); // Navegar a una ventana genérica
+            }
+        });
     }
 }
+
