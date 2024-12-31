@@ -106,7 +106,7 @@ public class Menu_Evento extends JFrame {
 
         JScrollPane comentariosScrollPane = new JScrollPane(comentariosPanel);
         comentariosScrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GRAY), "Comentarios", 0, 0, fontSubtitulo, Color.black));
+                BorderFactory.createLineBorder(Color.GRAY), "Comentarios", 0, 0, fontSubtitulo, textColor));
 
         JPanel asistentesPanel = new JPanel();
         asistentesPanel.setLayout(new BoxLayout(asistentesPanel, BoxLayout.Y_AXIS));
@@ -114,7 +114,7 @@ public class Menu_Evento extends JFrame {
 
         JScrollPane asistentesScrollPane = new JScrollPane(asistentesPanel);
         asistentesScrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GRAY), "Asitentes", 0, 0, fontSubtitulo, Color.black));
+                BorderFactory.createLineBorder(Color.GRAY), "Asitentes", 0, 0, fontSubtitulo, textColor));
 
         comentariosValoracionesPanel.add(comentariosScrollPane);
         comentariosValoracionesPanel.add(asistentesScrollPane);
