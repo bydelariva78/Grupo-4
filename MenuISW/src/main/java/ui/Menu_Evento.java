@@ -7,8 +7,12 @@ import java.util.HashMap;
 import Client.Client;
 import modelo.Eventos;
 
-public class Menu_Evento extends JFrame {
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+public class Menu_Evento extends JFrame {
     private Eventos evento;
     private JTextField descripcionField;
     private JTextField tipoMusicaField;
@@ -16,7 +20,7 @@ public class Menu_Evento extends JFrame {
     private JTextField precioMedioField;
 
     public Menu_Evento(Eventos evento) {
-        this.evento=evento;
+        this.evento = evento;
         setTitle("Detalles del Evento: " + evento.nombre);
         setSize(1100, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,7 +110,7 @@ public class Menu_Evento extends JFrame {
 
         JScrollPane comentariosScrollPane = new JScrollPane(comentariosPanel);
         comentariosScrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GRAY), "Comentarios", 0, 0, fontSubtitulo, Color.black));
+                BorderFactory.createLineBorder(Color.GRAY), "Comentarios", 0, 0, fontSubtitulo, textColor));
 
         JPanel asistentesPanel = new JPanel();
         asistentesPanel.setLayout(new BoxLayout(asistentesPanel, BoxLayout.Y_AXIS));
@@ -114,12 +118,12 @@ public class Menu_Evento extends JFrame {
 
         JScrollPane asistentesScrollPane = new JScrollPane(asistentesPanel);
         asistentesScrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.GRAY), "Asitentes", 0, 0, fontSubtitulo, Color.black));
+                BorderFactory.createLineBorder(Color.GRAY), "Asistentes", 0, 0, fontSubtitulo, textColor));
 
         comentariosValoracionesPanel.add(comentariosScrollPane);
         comentariosValoracionesPanel.add(asistentesScrollPane);
 
-        ArrayList<String[]> comentarios =obtenerComentarios(this.evento);
+        ArrayList<String[]> comentarios = obtenerComentarios(this.evento);
         for (String[] comentario : comentarios) {
             JPanel comentarioPanel = new JPanel();
             comentarioPanel.setLayout(new BorderLayout());
@@ -152,8 +156,6 @@ public class Menu_Evento extends JFrame {
             usuarioLabel.setFont(fontUsuario);
             usuarioLabel.setForeground(textColor);
 
-
-
             asistentePanel.add(usuarioLabel, BorderLayout.NORTH);
 
             asistentesPanel.add(asistentePanel);
@@ -163,6 +165,7 @@ public class Menu_Evento extends JFrame {
         // Botón de confirmación
         JPanel confirmButtonPanel = new JPanel();
         confirmButtonPanel.setBackground(backgroundColor);
+
         JButton confirmarButton = new JButton("Confirmar Cambios");
         confirmarButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
         confirmarButton.setForeground(textColor);
@@ -182,9 +185,26 @@ public class Menu_Evento extends JFrame {
             if (session.get("modificado").equals(true)){
                 System.out.println("modificado");
             }
-            else{ System.out.println("no");}
+            else{
+                System.out.println("no");
+            }
         });
+
+        // Agregar el botón "Cerrar sesión"
+        JButton cerrarSesionButton = new JButton("Cerrar Sesión");
+        cerrarSesionButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        cerrarSesionButton.setForeground(textColor);
+        cerrarSesionButton.setBackground(new Color(255, 69, 0)); // Color distintivo para el botón de cerrar sesión
+        cerrarSesionButton.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        cerrarSesionButton.setPreferredSize(new Dimension(300, 50));
+        cerrarSesionButton.addActionListener(e -> {
+            new InicioSesion();
+            dispose();
+            // Aquí puedes agregar lógica adicional para cerrar la sesión si es necesario
+        });
+
         confirmButtonPanel.add(confirmarButton);
+        confirmButtonPanel.add(cerrarSesionButton);  // Añadir el botón de "Cerrar sesión"
 
         // Ajustar panel principal
         mainPanel.add(infoEditablePanel, BorderLayout.NORTH);
@@ -193,7 +213,8 @@ public class Menu_Evento extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
     }
-    private  ArrayList<String[]> obtenerComentarios(Eventos evento){
+
+    private ArrayList<String[]> obtenerComentarios(Eventos evento) {
         Client cliente = new Client();
         HashMap<String, Object> session = new HashMap<>();
         String context = "/obtenerComentariosEvento";
@@ -202,7 +223,8 @@ public class Menu_Evento extends JFrame {
         ArrayList<String[]> comentarios = (ArrayList<String[]>) session.get("comentarios");
         return comentarios;
     }
-    private ArrayList<String> obtenerAsistentes(Eventos evento){
+
+    private ArrayList<String> obtenerAsistentes(Eventos evento) {
         Client cliente = new Client();
         HashMap<String, Object> session = new HashMap<>();
         String context = "/obtenerAsistentesEvento";
@@ -211,6 +233,7 @@ public class Menu_Evento extends JFrame {
         ArrayList<String> asistentes = (ArrayList<String>) session.get("asistentes");
         return asistentes;
     }
+
     public static void main(String[] args) {
         new Menu_Evento(new Eventos("Evento Prueba", "Descripción de prueba", "Rock", "18", "50"));
     }
