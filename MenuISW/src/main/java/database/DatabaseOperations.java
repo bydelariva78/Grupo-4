@@ -765,7 +765,7 @@ public class DatabaseOperations {
             pstmt.setString(1, user);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                String usuario = rs.getString("usuario");
+                String usuario = rs.getString("evento");
                 String comentario = rs.getString("comentario");
                 comentarios.add(new String[]{usuario,comentario});
             }
